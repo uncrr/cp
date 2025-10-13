@@ -1,0 +1,184 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Wireless Bluetooth Headphones",
+      "description": "High-quality wireless headphones with noise cancellation and 30-hour battery life",
+      "category": "electronics",
+      "brand": "SoundMax",
+      "image": "/placeholder-headphones.jpg",
+      "markets": [
+        {
+          "name": "Amazon",
+          "price": 79.99,
+          "originalPrice": 99.99,
+          "url": "https://amazon.com/product/123",
+          "shipping": "Free"
+        },
+        {
+          "name": "Walmart",
+          "price": 74.99,
+          "originalPrice": 89.99,
+          "url": "https://walmart.com/product/456",
+          "shipping": "$5.99"
+        },
+        {
+          "name": "AliExpress",
+          "price": 65.50,
+          "originalPrice": 85.00,
+          "url": "https://aliexpress.com/product/789",
+          "shipping": "Free"
+        }
+      ],
+      "rating": 4.5,
+      "reviewCount": 1247,
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "title": "Smart Fitness Watch",
+      "description": "Advanced fitness tracker with heart rate monitoring, GPS, and smartphone notifications",
+      "category": "electronics",
+      "brand": "FitTech",
+      "image": "/placeholder-watch.jpg",
+      "markets": [
+        {
+          "name": "Amazon",
+          "price": 129.99,
+          "originalPrice": 159.99,
+          "url": "https://amazon.com/product/234",
+          "shipping": "Free"
+        },
+        {
+          "name": "AliExpress",
+          "price": 89.99,
+          "originalPrice": 120.00,
+          "url": "https://aliexpress.com/product/567",
+          "shipping": "$3.99"
+        },
+        {
+          "name": "Alibaba",
+          "price": 75.00,
+          "originalPrice": 100.00,
+          "url": "https://alibaba.com/product/890",
+          "shipping": "$8.99"
+        }
+      ],
+      "rating": 4.2,
+      "reviewCount": 856,
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "title": "Stainless Steel Water Bottle",
+      "description": "1L insulated stainless steel water bottle that keeps drinks cold for 24 hours or hot for 12 hours",
+      "category": "home-kitchen",
+      "brand": "HydroFlask",
+      "image": "/placeholder-bottle.jpg",
+      "markets": [
+        {
+          "name": "Amazon",
+          "price": 34.99,
+          "originalPrice": 44.99,
+          "url": "https://amazon.com/product/345",
+          "shipping": "Free"
+        },
+        {
+          "name": "Walmart",
+          "price": 29.99,
+          "originalPrice": 39.99,
+          "url": "https://walmart.com/product/678",
+          "shipping": "Free"
+        }
+      ],
+      "rating": 4.7,
+      "reviewCount": 2103,
+      "inStock": true
+    },
+    {
+      "id": 4,
+      "title": "Mechanical Keyboard",
+      "description": "RGB backlit mechanical keyboard with customizable keys and ergonomic design",
+      "category": "electronics",
+      "brand": "KeyCraft",
+      "image": "/placeholder-keyboard.jpg",
+      "markets": [
+        {
+          "name": "Amazon",
+          "price": 89.99,
+          "originalPrice": 119.99,
+          "url": "https://amazon.com/product/456",
+          "shipping": "Free"
+        },
+        {
+          "name": "AliExpress",
+          "price": 65.00,
+          "originalPrice": 85.00,
+          "url": "https://aliexpress.com/product/901",
+          "shipping": "Free"
+        },
+        {
+          "name": "Alibaba",
+          "price": 55.00,
+          "originalPrice": 75.00,
+          "url": "https://alibaba.com/product/234",
+          "shipping": "$12.99"
+        }
+      ],
+      "rating": 4.4,
+      "reviewCount": 932,
+      "inStock": true
+    },
+    {
+      "id": 5,
+      "title": "Yoga Mat Premium",
+      "description": "Non-slip eco-friendly yoga mat with carrying strap and alignment markers",
+      "category": "sports-fitness",
+      "brand": "ZenYoga",
+      "image": "/placeholder-yogamat.jpg",
+      "markets": [
+        {
+          "name": "Amazon",
+          "price": 45.99,
+          "originalPrice": 59.99,
+          "url": "https://amazon.com/product/567",
+          "shipping": "Free"
+        },
+        {
+          "name": "Walmart",
+          "price": 39.99,
+          "originalPrice": 49.99,
+          "url": "https://walmart.com/product/890",
+          "shipping": "Free"
+        },
+        {
+          "name": "AliExpress",
+          "price": 28.50,
+          "originalPrice": 35.00,
+          "url": "https://aliexpress.com/product/345",
+          "shipping": "$4.99"
+        }
+      ],
+      "rating": 4.6,
+      "reviewCount": 1542,
+      "inStock": true
+    }
+  ],
+  "categories": [
+    "electronics",
+    "home-kitchen",
+    "sports-fitness",
+    "clothing",
+    "books",
+    "toys-games",
+    "beauty",
+    "automotive"
+  ],
+  "brands": [
+    "SoundMax",
+    "FitTech",
+    "HydroFlask",
+    "KeyCraft",
+    "ZenYoga"
+  ]
+}
