@@ -18,24 +18,24 @@ const {
 } = Astro.props;
 ---
 
-<div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-  <div class="flex justify-between items-center mb-4">
-    <h3 class="font-semibold text-lg text-gray-800">Filters</h3>
+<div class="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 w-full">
+  <div class="flex justify-between items-center mb-3 sm:mb-4">
+    <h3 class="font-semibold text-base sm:text-lg text-gray-800">Filters</h3>
     <button 
       id="resetFilters" 
-      class="text-sm text-primary-600 hover:text-primary-700 font-medium"
+      class="text-xs sm:text-sm text-primary-600 hover:text-primary-700 font-medium"
     >
       Reset All
     </button>
   </div>
   
-  <div class="space-y-6">
+  <div class="space-y-4 sm:space-y-6">
     <!-- Category Filter -->
     <div>
-      <h4 class="font-medium text-gray-700 mb-2">Category</h4>
+      <h4 class="font-medium text-gray-700 text-sm sm:text-base mb-1 sm:mb-2">Category</h4>
       <select 
         id="categoryFilter" 
-        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+        class="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
       >
         <option value="">All Categories</option>
         {
@@ -50,10 +50,10 @@ const {
     
     <!-- Brand Filter -->
     <div>
-      <h4 class="font-medium text-gray-700 mb-2">Brand</h4>
+      <h4 class="font-medium text-gray-700 text-sm sm:text-base mb-1 sm:mb-2">Brand</h4>
       <select 
         id="brandFilter" 
-        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+        class="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
       >
         <option value="">All Brands</option>
         {
@@ -66,9 +66,9 @@ const {
     
     <!-- Price Range Filter -->
     <div>
-      <h4 class="font-medium text-gray-700 mb-2">Max Price: $<span id="priceRangeValue">{priceRange.max}</span></h4>
-      <div class="flex items-center space-x-2 mb-2">
-        <span class="text-sm text-gray-600">$0</span>
+      <h4 class="font-medium text-gray-700 text-sm sm:text-base mb-1 sm:mb-2">Max Price: $<span id="priceRangeValue">{priceRange.max}</span></h4>
+      <div class="flex items-center space-x-2 mb-1 sm:mb-2">
+        <span class="text-xs sm:text-sm text-gray-600">$0</span>
         <input 
           type="range" 
           id="priceRange" 
@@ -77,16 +77,16 @@ const {
           value={priceRange.max}
           class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
         />
-        <span class="text-sm text-gray-600">$1000+</span>
+        <span class="text-xs sm:text-sm text-gray-600">$1000+</span>
       </div>
     </div>
     
     <!-- Sort Options -->
     <div>
-      <h4 class="font-medium text-gray-700 mb-2">Sort By</h4>
+      <h4 class="font-medium text-gray-700 text-sm sm:text-base mb-1 sm:mb-2">Sort By</h4>
       <select 
         id="sortOptions" 
-        class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+        class="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
       >
         <option value="relevance" selected={selectedSort === "relevance"}>Relevance</option>
         <option value="price-low" selected={selectedSort === "price-low"}>Price: Low to High</option>
@@ -148,8 +148,8 @@ const {
 <style>
   .slider::-webkit-slider-thumb {
     appearance: none;
-    height: 20px;
-    width: 20px;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: #3b82f6;
     cursor: pointer;
@@ -158,8 +158,8 @@ const {
   }
   
   .slider::-moz-range-thumb {
-    height: 20px;
-    width: 20px;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: #3b82f6;
     cursor: pointer;
