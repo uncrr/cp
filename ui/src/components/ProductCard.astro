@@ -17,10 +17,12 @@ export interface Props {
     inStock: boolean;
     vendor: string;
   };
-  translations?: any;
 }
 
-const { product, translations = {} } = Astro.props;
+const { product } = Astro.props;
+import {useTranslations } from "../i18n/utils"
+
+const t = useTranslations(Astro.params.locale as "en" | "de" | "es" | "fr");
 
 const marketColors = {
   'Amazon': 'bg-yellow-500',
@@ -31,7 +33,7 @@ const marketColors = {
   'default': 'bg-gray-500'
 };
 
-const marketColor = marketColors[product.market] || marketColors.default;
+// const marketColor = marketColors[product.market] || marketColors.default;
 ---
 
 <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-200 mx-auto w-full max-w-2xl">
@@ -39,7 +41,7 @@ const marketColor = marketColors[product.market] || marketColors.default;
     <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
       <!-- Product Image -->
       <div class="flex-shrink-0 w-full sm:w-32 h-32 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center mx-auto sm:mx-0">
-        <span class="text-gray-400 dark:text-gray-500 text-sm">{translations.products?.image || "Image"}</span>
+        <span class="text-gray-400 dark:text-gray-500 text-sm">{t('product.image')}</span>
       </div>
       
       <!-- Product Details -->
@@ -67,8 +69,7 @@ const marketColor = marketColors[product.market] || marketColors.default;
           <div class="flex items-center">
             <div class="flex mr-2">
               {[1, 2, 3, 4, 5].map((star) => (
-                <svg 
-                  key={star}
+                <svg
                   class={`h-4 w-4 ${star <= Math.floor(product.rating) ? 'text-amber-400 fill-current' : 'text-gray-300 dark:text-gray-600'}`}
                   viewBox="0 0 20 20"
                 >
@@ -77,7 +78,7 @@ const marketColor = marketColors[product.market] || marketColors.default;
               ))}
             </div>
             <span class="text-sm text-gray-600 dark:text-gray-400">
-              {product.rating} ({product.reviewCount} {translations.products?.reviews || "reviews"})
+              {product.rating} ({product.reviewCount} {t('product.reviews')})
             </span>
           </div>
           
@@ -108,7 +109,7 @@ const marketColor = marketColors[product.market] || marketColors.default;
           
           <div class="flex flex-col sm:items-end gap-2">
             <div class="text-sm text-gray-600 dark:text-gray-400">
-              {translations.products?.shipping || "Shipping"}: {product.shipping}
+              {t('product.shipping')}: {product.shipping}
             </div>
             <a 
               href={product.url}
@@ -116,7 +117,7 @@ const marketColor = marketColors[product.market] || marketColors.default;
               rel="noopener noreferrer"
               class="w-full sm:w-auto dark:text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 text-center flex items-center justify-center gap-2"
             >
-              <span>{translations.products?.visit || "Visit Store"}</span>
+              <span>{t('product.visit')}</span>
               <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
@@ -138,7 +139,7 @@ const marketColor = marketColors[product.market] || marketColors.default;
               <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
-              Out of Stock
+              {t('product.outOfStock')}
             </span>
           )}
         </div>
