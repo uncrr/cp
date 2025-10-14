@@ -1,12 +1,13 @@
 ---
 export interface Props {
   initialQuery?: string;
+  translations?: any;
 }
 
-const { initialQuery = "" } = Astro.props;
+const { initialQuery = "", translations = {} } = Astro.props;
 ---
 
-<div class="w-full max-w-2xl mx-auto px-2">
+<div class="max-w-2xl mx-auto px-2">
   <form id="searchForm" class="relative">
     <div class="relative flex rounded-lg shadow-sm">
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -19,15 +20,15 @@ const { initialQuery = "" } = Astro.props;
         id="searchInput"
         name="q"
         value={initialQuery}
-        placeholder="Search products, brands..."
-        class="block w-full pl-10 pr-4 py-3 text-sm sm:text-base border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+        placeholder={translations.search?.placeholder || "Search for products, brands, or categories..."}
+        class="block w-full pl-10 pr-4 py-3 text-sm sm:text-base rounded-l-lg border-none dark:bg-gray-700 dark:text-white transition-colors duration-200"
         autocomplete="off"
       />
       <button
         type="submit"
-        class="px-4 sm:px-6 py-3 bg-primary-600 text-white font-medium text-sm sm:text-base rounded-r-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors"
+        class="px-4 sm:px-6 py-3 cursor-pointer border-none dark:hover:bg-gray-800 hover:bg-gray-800 hover:text-gray-200 font-medium text-sm sm:text-base rounded-r-lg transition-all duration-200"
       >
-        Search
+        {translations.search?.button || "Search"}
       </button>
     </div>
   </form>
