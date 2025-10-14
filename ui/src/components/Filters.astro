@@ -1,16 +1,18 @@
 ---
 export interface Props {
   categories: string[];
-  brands: string[];
   selectedCategory?: string;
   selectedSort?: string;
   priceRange?: { min: number; max: number };
   translations?: any;
 }
 
+import {useTranslations } from "../i18n/utils"
+
+const t = useTranslations(Astro.params.locale as "en" | "de" | "es" | "fr");
+
 const { 
   categories, 
-  brands, 
   selectedCategory = "", 
   selectedSort = "relevance",
   priceRange = { min: 0, max: 10000 },
@@ -21,13 +23,13 @@ const {
 <div class="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 w-full transition-colors duration-200">
   <div class="flex justify-between items-center mb-3 sm:mb-4">
     <h3 class="font-semibold text-base sm:text-lg text-gray-800 dark:text-gray-200">
-      {translations.filters?.title || "Filters"}
+      {t('filter.title')}
     </h3>
     <button 
       id="resetFilters" 
       class="text-xs sm:text-sm text-gray-700 border-none cursor-pointer rounded hover:bg-gray-300 dark:text-gray-100 dark:bg-gray-700 dark:text-white hover:text-gray-700 dark:hover:bg-gray-200 dark:hover:text-gray-700 font-medium transition-colors duration-200"
     >
-      {translations.filters?.reset || "Reset Filter"}
+      {t('filter.reset')}
     </button>
   </div>
   
@@ -35,13 +37,13 @@ const {
     <!-- Category Filter -->
     <div>
       <h4 class="font-medium text-gray-700 dark:text-gray-300 text-sm sm:text-base mb-1 sm:mb-2">
-        {translations.filters?.category || "Category"}
+        {t('filter.category')}
       </h4>
       <select 
         id="categoryFilter" 
         class="w-full p-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
       >
-        <option value="">{translations.filters?.allCategories || "All Categories"}</option>
+        <option value="">{t('filter.category.all')}</option>
         {
           categories.map(category => (
             <option value={category} selected={selectedCategory === category}>
@@ -81,19 +83,19 @@ const {
         class="w-full p-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
       >
         <option value="relevance" selected={selectedSort === "relevance"}>
-          {translations.filters?.sortOptions?.relevance || "Relevance"}
+          {t('filter.sort.relevance')}
         </option>
         <option value="price-low" selected={selectedSort === "price-low"}>
-          {translations.filters?.sortOptions?.["price-low"] || "Price: Low to High"}
+          {t('filter.sort.priceAsc')}
         </option>
         <option value="price-high" selected={selectedSort === "price-high"}>
-          {translations.filters?.sortOptions?.["price-high"] || "Price: High to Low"}
+          {t('filter.sort.priceDesc')}
         </option>
         <option value="rating" selected={selectedSort === "rating"}>
-          {translations.filters?.sortOptions?.rating || "Highest Rated"}
+          {t('filter.sort.rating')}
         </option>
         <option value="popular" selected={selectedSort === "popular"}>
-          {translations.filters?.sortOptions?.popular || "Most Popular"}
+          {t('filter.sort.popular')}
         </option>
       </select>
     </div>
@@ -115,10 +117,6 @@ const {
   
   // Auto-apply when filters change
   document.getElementById('categoryFilter')?.addEventListener('change', function() {
-    applyFilters();
-  });
-  
-  document.getElementById('brandFilter')?.addEventListener('change', function() {
     applyFilters();
   });
   
