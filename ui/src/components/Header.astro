@@ -4,7 +4,10 @@ export interface Props {
   translations?: any;
 }
 
-const { currentLang = "en", translations = {} } = Astro.props;
+import {useTranslations, getLangFromUrl } from "../i18n/utils"
+
+const currentLang = getLangFromUrl(Astro.url);
+const t = useTranslations(Astro.params.locale as "en" | "de" | "es" | "fr");
 ---
 
 <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10 transition-colors duration-200">
@@ -13,12 +16,12 @@ const { currentLang = "en", translations = {} } = Astro.props;
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-center sm:text-left">
       <div class="flex items-center justify-center sm:justify-start">
         <h1 class="text-xl sm:text-2xl font-bold text-gray-700 dark:text-gray-100 ">
-          {translations.header?.title || "compulsiveprices.com"}
+          {t('nav.title')}
         </h1>
         <span class="ml-2 text-xs text-gray-700 dark:text-gray-100 px-2 py-1 rounded-full hidden sm:inline">Beta</span>
       </div>
       <p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm transition-colors duration-200">
-        {translations.header?.subtitle || "Compare prices from Amazon, AliExpress, Walmart, Alibaba and more"}
+        {t('nav.description')}
       </p>
       <div class="flex justify-center sm:justify-end items-center gap-4 mt-3">
       <!-- Dark Mode Toggle -->
@@ -54,37 +57,59 @@ const { currentLang = "en", translations = {} } = Astro.props;
         <div id="languageDropdown" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 hidden z-20 transition-all duration-200">
           <div class="p-2 space-y-1">
             <button 
-              data-lang="en" 
-              class="w-full text-left px-3 py-2 text-sm cursor-pointer text-gray-700 dark:text-gray-700 hover:bg-gray-700 hover:dark:text-gray-100 dark:hover:bg-gray-700 rounded-md flex items-center justify-between transition-colors duration-200"
+            data-lang="en" 
+            class="w-full text-left px-3 py-2 text-sm cursor-pointer text-gray-700 dark:text-gray-700 hover:bg-gray-700 hover:dark:text-gray-100 dark:hover:bg-gray-700 rounded-md flex items-center justify-between transition-colors duration-200"
             >
+            <a href="/en" class="w-full flex items-center justify-between no-underline text-gray-700 dark:text-gray-700 hover:bg-gray-700 hover:dark:text-gray-100 dark:hover:bg-gray-700 rounded-md">
               <span>English</span>
               {currentLang === 'en' && (
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+              )}
+              </a>
+            </button>
+            <button 
+              data-lang="de" 
+              class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-700 hover:dark:text-gray-100 hover:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer rounded-md flex items-center justify-between transition-colors duration-200"
+            >
+            <a href="/de" class="w-full flex items-center justify-between no-underline text-gray-700 dark:text-gray-700 hover:bg-gray-700 hover:dark:text-gray-100 dark:hover:bg-gray-700 rounded-md">
+
+              <span>Deutsch</span>
+              {currentLang === 'de' && (
                 <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
               )}
+              </a>
             </button>
             <button 
-              data-lang="es" 
+              data-lang="es"
+     
               class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-700 hover:dark:text-gray-100 hover:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer rounded-md flex items-center justify-between transition-colors duration-200"
             >
+            <a href="/es" class="w-full flex items-center justify-between no-underline text-gray-700 dark:text-gray-700 hover:bg-gray-700 hover:dark:text-gray-100 dark:hover:bg-gray-700 rounded-md">
               <span>Español</span>
               {currentLang === 'es' && (
                 <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
               )}
+              </a>
             </button>
             <button 
               data-lang="fr" 
               class="w-full text-left px-3 py-2 text-sm text-gray-700 dark:text-gray-700 hover:dark:text-gray-100 hover:bg-gray-700 dark:hover:bg-gray-700 cursor-pointer rounded-md flex items-center justify-between transition-colors duration-200"
             >
+            <a href="/fr" class="w-full flex items-center justify-between no-underline text-gray-700 dark:text-gray-700 hover:bg-gray-700 hover:dark:text-gray-100 dark:hover:bg-gray-700 rounded-md">
+
               <span>Français</span>
               {currentLang === 'fr' && (
                 <svg class="w-4 h-4 text-primary-600 dark:text-primary-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
               )}
+              </a>
             </button>
           </div>
         </div>
