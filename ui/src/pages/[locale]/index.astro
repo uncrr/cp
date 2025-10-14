@@ -116,13 +116,13 @@ const serializedProducts = JSON.stringify(products);
             </h2>
             
             <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center sm:text-right">
-              {"Sorted by"}: 
+              {t('filter.sorted')}: 
               <span class="font-medium ml-1">
-                {sortFilter === 'relevance' ? ("Relevance") :
-                 sortFilter === 'price-low' ? ("Price: Low to High") :
-                 sortFilter === 'price-high' ? ( "Price: High to Low") :
-                 sortFilter === 'rating' ? ("Highest Rated") : 
-                 ("Most Popular")}
+                {sortFilter === 'relevance' ? t('filter.sort.relevance') :
+                 sortFilter === 'price-low' ? t('filter.sort.priceAsc') :
+                 sortFilter === 'price-high' ? t('filter.sort.priceDesc') :
+                 sortFilter === 'rating' ? t('filter.sort.rating') : 
+                 t('filter.sort.popular')}
               </span>
             </div>
           </div>
