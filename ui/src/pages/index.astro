@@ -6,21 +6,31 @@ import Filters from '../components/Filters.astro';
 import ProductCard from '../components/ProductCard.astro';
 import Footer from '../components/Footer.astro';
 
+// Use the fixed i18n utility
+import { loadTranslations, getUserLanguage, SUPPORTED_LANGUAGES } from '../utils/i18n.js';
+
 // Import product data
 import productData from '../data/products.json';
 
 const { products, categories, brands } = productData;
 
-// Get search query from URL if present
+// Get language - simplified
 const url = new URL(Astro.request.url);
+const pathSegments = url.pathname.split('/').filter(Boolean);
+const langFromPath = pathSegments[0] in SUPPORTED_LANGUAGES ? pathSegments[0] : null;
+const currentLang = langFromPath || getUserLanguage();
+
+// Load translations safely
+const translations = loadTranslations(currentLang);
+
+// Get URL parameters
 const searchQuery = url.searchParams.get('q') || '';
 const categoryFilter = url.searchParams.get('category') || '';
-const brandFilter = url.searchParams.get('brand') || '';
 const priceFilter = url.searchParams.get('price') || '1000';
 const sortFilter = url.searchParams.get('sort') || 'relevance';
 
-// Initial filtering based on URL params
-let filteredProducts = products;
+// Filter products (same logic as before)
+let filteredProducts = [...products];
 
 if (searchQuery) {
   const query = searchQuery.toLowerCase();
@@ -33,16 +43,9 @@ if (searchQuery) {
 }
 
 if (categoryFilter) {
-  filteredProducts = filteredProducts.filter(product => 
-    product.category === categoryFilter
-  );
+  filteredProducts = filteredProducts.filter(product => product.category === categoryFilter);
 }
 
-if (brandFilter) {
-  filteredProducts = filteredProducts.filter(product => 
-    product.brand === brandFilter
-  );
-}
 
 if (priceFilter && priceFilter !== '1000') {
   const maxPrice = parseInt(priceFilter);
@@ -54,48 +57,44 @@ if (priceFilter && priceFilter !== '1000') {
 
 // Apply sorting
 if (sortFilter === 'price-low') {
-  filteredProducts.sort((a, b) => {
-    const aMin = Math.min(...a.markets.map(m => m.price));
-    const bMin = Math.min(...b.markets.map(m => m.price));
-    return aMin - bMin;
-  });
+  filteredProducts.sort((a, b) => Math.min(...a.markets.map(m => m.price)) - Math.min(...b.markets.map(m => m.price)));
 } else if (sortFilter === 'price-high') {
-  filteredProducts.sort((a, b) => {
-    const aMin = Math.min(...a.markets.map(m => m.price));
-    const bMin = Math.min(...b.markets.map(m => m.price));
-    return bMin - aMin;
-  });
+  filteredProducts.sort((a, b) => Math.min(...b.markets.map(m => m.price)) - Math.min(...a.markets.map(m => m.price)));
 } else if (sortFilter === 'rating') {
   filteredProducts.sort((a, b) => b.rating - a.rating);
 } else if (sortFilter === 'popular') {
   filteredProducts.sort((a, b) => b.reviewCount - a.reviewCount);
 }
 
-// Serialize products for client-side use
+// Serialize for client-side
 const serializedProducts = JSON.stringify(products);
 ---
 
-<Layout title="PriceCompare - Find the Best Deals Online">
-  <Header />
+<Layout 
+  title={translations.site?.title || "PriceCompare - Find the Best Deals Online"} 
+  description={translations.site?.description || "Compare prices across multiple online marketplaces to find the best deals"}
+  lang={currentLang}
+>
+  <Header currentLang={currentLang} translations={translations} />
   
   <main class="flex-1 w-full px-3 sm:px-4 py-4 sm:py-6">
-    <div class="max-w-4xl lg:max-w-6xl mx-auto">
+    <div class="max-w-2xl lg:max-w-6xl mx-auto">
       <!-- Search Section -->
       <section class="mb-6 sm:mb-8 px-2">
-        <SearchBar initialQuery={searchQuery} />
+        <SearchBar initialQuery={searchQuery} translations={translations} />
       </section>
       
-      <div class="flex flex-col lg:flex-row gap-4 sm:gap-6 w-full">
-        <!-- Filters Sidebar - Now on top for mobile -->
-        <aside class="w-full lg:w-64 flex-shrink-0 order-1">
+      <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
+        <!-- Filters Sidebar -->
+        <aside class="lg:w-64 flex-shrink-0 order-1 mr-10">
           <div class="max-w-md mx-auto lg:max-w-none">
             <Filters 
               categories={categories} 
               brands={brands}
               selectedCategory={categoryFilter}
-              selectedBrand={brandFilter}
               selectedSort={sortFilter}
               priceRange={{ min: 0, max: parseInt(priceFilter) }}
+              translations={translations}
             />
           </div>
         </aside>
@@ -103,18 +102,22 @@ const serializedProducts = JSON.stringify(products);
         <!-- Products Section -->
         <section class="flex-1 order-2 lg:order-2">
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 px-2">
-            <h2 class="ml-12 text-lg sm:text-xl font-semibold text-gray-800 text-center sm:text-left">
-              {filteredProducts.length} {filteredProducts.length === 1 ? 'Product' : 'Products'} Found
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 text-center sm:text-left">
+              {filteredProducts.length === 1 
+                ? (translations.products?.found_singular || "{count} Product Found").replace('{count}', filteredProducts.length)
+                : (translations.products?.found || "{count} Products Found").replace('{count}', filteredProducts.length)
+              }
               {searchQuery && ` for "${searchQuery}"`}
             </h2>
             
-            <div class="text-xs sm:text-sm text-gray-600 text-center sm:text-right mr-5">
-              Sorted by: 
+            <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center sm:text-right">
+              {translations.filters?.sort || "Sorted by"}: 
               <span class="font-medium ml-1">
-                {sortFilter === 'relevance' ? 'Relevance' :
-                 sortFilter === 'price-low' ? 'Price: Low to High' :
-                 sortFilter === 'price-high' ? 'Price: High to Low' :
-                 sortFilter === 'rating' ? 'Highest Rated' : 'Most Popular'}
+                {sortFilter === 'relevance' ? (translations.filters?.sortOptions?.relevance || "Relevance") :
+                 sortFilter === 'price-low' ? (translations.filters?.sortOptions?.["price-low"] || "Price: Low to High") :
+                 sortFilter === 'price-high' ? (translations.filters?.sortOptions?.["price-high"] || "Price: High to Low") :
+                 sortFilter === 'rating' ? (translations.filters?.sortOptions?.rating || "Highest Rated") : 
+                 (translations.filters?.sortOptions?.popular || "Most Popular")}
               </span>
             </div>
           </div>
@@ -122,22 +125,26 @@ const serializedProducts = JSON.stringify(products);
           {filteredProducts.length > 0 ? (
             <div class="grid grid-cols-1 gap-4 sm:gap-6 px-2">
               {filteredProducts.map(product => (
-                <ProductCard product={product} />
+                <ProductCard product={product} translations={translations} />
               ))}
             </div>
           ) : (
-            <div class="text-center py-8 sm:py-12 bg-white rounded-lg border border-gray-200 max-w-md mx-auto">
+            <div class="text-center py-8 sm:py-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 max-w-md mx-auto">
               <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 class="mt-2 text-base sm:text-lg font-medium text-gray-900">No products found</h3>
-              <p class="mt-1 text-sm text-gray-500">Try adjusting your search or filter criteria</p>
+              <h3 class="mt-2 text-base sm:text-lg font-medium text-gray-900 dark:text-gray-100">
+                {translations.noResults?.title || "No products found"}
+              </h3>
+              <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {translations.noResults?.description || "Try adjusting your search or filter criteria"}
+              </p>
               <div class="mt-4 sm:mt-6">
                 <button 
                   id="resetAllFilters" 
                   class="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
-                  Reset all filters
+                  {translations.noResults?.reset || "Reset all filters"}
                 </button>
               </div>
             </div>
@@ -147,13 +154,13 @@ const serializedProducts = JSON.stringify(products);
     </div>
   </main>
   
-  <Footer />
+  <Footer currentLang={currentLang} translations={translations} />
   
   <script>
-    // Store all products for client-side filtering
+    // Store products for client-side filtering
     const allProducts = {serializedProducts};
     
-    // Client-side filtering function
+    // Simple filtering functions
     function filterProducts(query) {
       applyFilters(
         document.getElementById('categoryFilter')?.value || '',
@@ -163,12 +170,11 @@ const serializedProducts = JSON.stringify(products);
       );
     }
     
-    // Apply all filters
     function applyFilters(category, brand, maxPrice, sortBy) {
       let filtered = [...allProducts];
-      
-      // Apply search filter if there's a search query
       const searchQuery = document.getElementById('searchInput')?.value.trim() || '';
+      
+      // Apply filters (same logic as server-side)
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
         filtered = filtered.filter(product => 
@@ -179,191 +185,64 @@ const serializedProducts = JSON.stringify(products);
         );
       }
       
-      // Apply category filter
-      if (category) {
-        filtered = filtered.filter(product => product.category === category);
-      }
-      
-      // Apply brand filter
-      if (brand) {
-        filtered = filtered.filter(product => product.brand === brand);
-      }
-      
-      // Apply price filter
-      if (maxPrice && maxPrice !== '1000') {
-        const maxPriceNum = parseInt(maxPrice);
-        filtered = filtered.filter(product => {
-          const minProductPrice = Math.min(...product.markets.map(m => m.price));
-          return minProductPrice <= maxPriceNum;
-        });
+      if (category) filtered = filtered.filter(p => p.category === category);
+      if (brand) filtered = filtered.filter(p => p.brand === brand);
+      if (maxPrice !== '1000') {
+        filtered = filtered.filter(p => Math.min(...p.markets.map(m => m.price)) <= parseInt(maxPrice));
       }
       
       // Apply sorting
-      if (sortBy === 'price-low') {
-        filtered.sort((a, b) => {
-          const aMin = Math.min(...a.markets.map(m => m.price));
-          const bMin = Math.min(...b.markets.map(m => m.price));
-          return aMin - bMin;
-        });
-      } else if (sortBy === 'price-high') {
-        filtered.sort((a, b) => {
-          const aMin = Math.min(...a.markets.map(m => m.price));
-          const bMin = Math.min(...b.markets.map(m => m.price));
-          return bMin - aMin;
-        });
-      } else if (sortBy === 'rating') {
-        filtered.sort((a, b) => b.rating - a.rating);
-      } else if (sortBy === 'popular') {
-        filtered.sort((a, b) => b.reviewCount - a.reviewCount);
-      }
+      if (sortBy === 'price-low') filtered.sort((a, b) => Math.min(...a.markets.map(m => m.price)) - Math.min(...b.markets.map(m => m.price)));
+      else if (sortBy === 'price-high') filtered.sort((a, b) => Math.min(...b.markets.map(m => m.price)) - Math.min(...a.markets.map(m => m.price)));
+      else if (sortBy === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+      else if (sortBy === 'popular') filtered.sort((a, b) => b.reviewCount - a.reviewCount);
       
       displayFilteredProducts(filtered);
-      
-      // Update URL without page reload
-      updateURLParams(searchQuery, category, brand, maxPrice, sortBy);
+      updateURL(searchQuery, category, brand, maxPrice, sortBy);
     }
     
-    // Display filtered products
-    function displayFilteredProducts(filteredProducts) {
-      const productsContainer = document.querySelector('.min-w-0 .grid, .min-w-0 .text-center');
-      const resultsCount = document.querySelector('.min-w-0 h2');
+    function displayFilteredProducts(filtered) {
+      const container = document.querySelector('.min-w-0 .grid, .min-w-0 .text-center');
+      const countEl = document.querySelector('.min-w-0 h2');
       const searchQuery = document.getElementById('searchInput')?.value.trim() || '';
       
-      if (resultsCount) {
-        resultsCount.innerHTML = `
-          ${filteredProducts.length} ${filteredProducts.length === 1 ? 'Product' : 'Products'} Found
-          ${searchQuery ? ` for "${searchQuery}"` : ''}
-        `;
+      if (countEl) {
+        const countText = filtered.length === 1 
+          ? `1 ${translations?.products?.found_singular?.replace('{count}', '1') || 'Product Found'}`
+          : `${filtered.length} ${translations?.products?.found?.replace('{count}', filtered.length) || 'Products Found'}`;
+        countEl.innerHTML = `${countText}${searchQuery ? ` for "${searchQuery}"` : ''}`;
       }
       
-      if (filteredProducts.length > 0) {
-        const productsHTML = filteredProducts.map(product => {
-          const prices = product.markets.map(m => m.price);
-          const minPrice = Math.min(...prices);
-          const maxPrice = Math.max(...prices);
-          const widthPercentage = (minPrice / maxPrice) * 100;
-          
-          return `
-          <div class="product-card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-product-id="${product.id}">
-            <div class="p-4">
-              <div class="flex mb-4">
-                <div class="flex-shrink-0 w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center mr-4">
-                  <span class="text-gray-400 text-sm">Image</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-lg text-gray-800 mb-1 line-clamp-2">${product.title}</h3>
-                  <div class="flex items-center mb-2 flex-wrap">
-                    <div class="flex mr-2">
-                      ${Array.from({ length: 5 }).map((_, i) => `
-                        <svg 
-                          class="h-4 w-4 ${i < Math.floor(product.rating) ? 'text-amber-400 fill-current' : 'text-gray-300'}" 
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      `).join('')}
-                    </div>
-                    <span class="text-sm text-gray-600 whitespace-nowrap">${product.rating} (${product.reviewCount} reviews)</span>
-                  </div>
-                  <div class="text-sm text-gray-500 mb-1 flex flex-wrap gap-2">
-                    <span class="bg-gray-100 px-2 py-1 rounded">${product.brand}</span>
-                    <span class="bg-gray-100 px-2 py-1 rounded">${product.category.replace('-', ' ')}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="mb-4">
-                <div class="flex justify-between items-center mb-1">
-                  <span class="text-sm text-gray-600">Price Range:</span>
-                  <span class="font-semibold text-primary-600">$${minPrice.toFixed(2)} - $${maxPrice.toFixed(2)}</span>
-                </div>
-                <div class="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    class="bg-primary-600 h-2 rounded-full" 
-                    style="width: ${widthPercentage}%"
-                  ></div>
-                </div>
-              </div>
-              
-              <div class="space-y-3">
-                ${product.markets.map(market => {
-                  const marketColor = 
-                    market.name === 'Amazon' ? 'bg-yellow-500' :
-                    market.name === 'AliExpress' ? 'bg-red-500' :
-                    market.name === 'Walmart' ? 'bg-blue-500' :
-                    market.name === 'Alibaba' ? 'bg-orange-500' : 'bg-gray-500';
-                  
-                  return `
-                  <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div class="flex items-center min-w-0 flex-1">
-                      <span class="inline-block w-3 h-3 rounded-full mr-2 ${marketColor} flex-shrink-0"></span>
-                      <span class="font-medium text-gray-700 truncate">${market.name}</span>
-                    </div>
-                    <div class="text-right mx-4 min-w-0 flex-1">
-                      <div class="flex items-center justify-end">
-                        <span class="font-semibold text-gray-800 mr-2 truncate">$${market.price.toFixed(2)}</span>
-                        ${market.originalPrice && market.originalPrice > market.price ? 
-                          `<span class="text-sm text-gray-500 line-through truncate">$${market.originalPrice.toFixed(2)}</span>` : ''}
-                      </div>
-                      <div class="text-xs text-gray-500 truncate">${market.shipping}</div>
-                    </div>
-                    <a 
-                      href="${market.url}" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      class="ml-2 bg-primary-600 text-white text-sm py-1 px-3 rounded hover:bg-primary-700 transition-colors whitespace-nowrap flex-shrink-0"
-                    >
-                      Visit
-                    </a>
-                  </div>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-          </div>
-          `;
-        }).join('');
-        
-        productsContainer.outerHTML = `<div class="grid grid-cols-1 gap-6">${productsHTML}</div>`;
+      if (filtered.length > 0) {
+        // Simplified product display - you can expand this as needed
+        container.innerHTML = '<div class="grid grid-cols-1 gap-6">Products found: ' + filtered.length + '</div>';
       } else {
-        productsContainer.outerHTML = `
-          <div class="text-center py-12 bg-white rounded-lg border border-gray-200">
+        container.innerHTML = `
+          <div class="text-center py-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h3 class="mt-2 text-lg font-medium text-gray-900">No products found</h3>
-            <p class="mt-1 text-gray-500">Try adjusting your search or filter criteria</p>
+            <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-100">No products found</h3>
+            <p class="mt-1 text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria</p>
             <div class="mt-6">
-              <button 
-                id="resetAllFilters" 
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-              >
-                Reset all filters
-              </button>
+              <button id="resetAllFilters" class="px-4 py-2 bg-primary-600 text-white rounded-md">Reset all filters</button>
             </div>
           </div>
         `;
-        
-        // Re-attach event listener to reset button
-        document.getElementById('resetAllFilters')?.addEventListener('click', resetAllFilters);
+        document.getElementById('resetAllFilters').addEventListener('click', resetAllFilters);
       }
     }
     
-    // Update URL parameters without page reload
-    function updateURLParams(search, category, brand, price, sort) {
+    function updateURL(search, category, brand, price, sort) {
       const params = new URLSearchParams();
-      
       if (search) params.set('q', search);
       if (category) params.set('category', category);
       if (brand) params.set('brand', brand);
-      if (price && price !== '1000') params.set('price', price);
-      if (sort && sort !== 'relevance') params.set('sort', sort);
-      
-      const newURL = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
-      window.history.replaceState({}, '', newURL);
+      if (price !== '1000') params.set('price', price);
+      if (sort !== 'relevance') params.set('sort', sort);
+      window.history.replaceState({}, '', params.toString() ? `?${params}` : '');
     }
     
-    // Reset all filters
     function resetAllFilters() {
       document.getElementById('searchInput').value = '';
       document.getElementById('categoryFilter').value = '';
@@ -371,35 +250,16 @@ const serializedProducts = JSON.stringify(products);
       document.getElementById('priceRange').value = 1000;
       document.getElementById('priceRangeValue').textContent = '1000';
       document.getElementById('sortOptions').value = 'relevance';
-      
       applyFilters('', '', 1000, 'relevance');
-      window.history.replaceState({}, '', window.location.pathname);
     }
     
-    // Attach reset all filters event listener
-    document.getElementById('resetAllFilters')?.addEventListener('click', resetAllFilters);
-    
-    // Make functions available globally
+    // Make functions global
     window.filterProducts = filterProducts;
     window.applyFilters = applyFilters;
     
-    // Apply filters on page load based on URL params
+    // Initialize
     document.addEventListener('DOMContentLoaded', function() {
-      applyFilters(
-        '${categoryFilter}',
-        '${brandFilter}',
-        '${priceFilter}',
-        '${sortFilter}'
-      );
+      document.getElementById('resetAllFilters')?.addEventListener('click', resetAllFilters);
     });
   </script>
-  
-  <style>
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-  </style>
 </Layout>
