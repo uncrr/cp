@@ -2,24 +2,117 @@
 export interface Props {
   title: string;
   description?: string;
+  lang?: string;
 }
 
-const { title, description = "Compare prices across multiple online marketplaces to find the best deals" } = Astro.props;
+const { title, description = "Compare prices across multiple online marketplaces to find the best deals", lang = "en" } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- SEO Meta Tags -->
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content="price comparison, shopping, deals, amazon, aliexpress, walmart, alibaba, online shopping" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
     <style>
       @import '../styles/global.css';
     </style>
+    
+    <script>
+      // Initialize theme immediately to prevent flash
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+          
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {
+          console.log('Theme initialization error:', e);
+        }
+      })();
+    </script>
   </head>
-  <body class="bg-gray-50 min-h-screen flex flex-col">
+  <body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-200">
     <slot />
+    
+    <!-- Global scripts that work on all pages -->
+    <script>
+      // Dark mode functionality
+      function setupDarkMode() {
+        const toggle = document.getElementById('darkModeToggle');
+        if (!toggle) return;
+        
+        toggle.addEventListener('click', function() {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      }
+      
+      // Language switcher functionality
+      function setupLanguageSwitcher() {
+        const toggle = document.getElementById('languageToggle');
+        const dropdown = document.getElementById('languageDropdown');
+        
+        if (!toggle || !dropdown) return;
+        
+        toggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          dropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+          dropdown.classList.add('hidden');
+        });
+        
+        // Language selection
+        dropdown.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+        
+        document.querySelectorAll('#languageDropdown button[data-lang]').forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const lang = this.getAttribute('data-lang');
+            localStorage.setItem('preferred-language', lang);
+            
+            // Simple redirect - in a real app you'd handle this differently
+            if (lang === 'en') {
+              window.location.href = '/';
+            } else {
+              window.location.href = `/${lang}/`;
+            }
+          });
+        });
+      }
+      
+      // Initialize when DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        setupDarkMode();
+        setupLanguageSwitcher();
+      });
+    </script>
   </body>
 </html>
