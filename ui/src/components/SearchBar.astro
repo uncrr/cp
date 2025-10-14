@@ -3,7 +3,9 @@ export interface Props {
   initialQuery?: string;
   translations?: any;
 }
+import {useTranslations } from "../i18n/utils"
 
+const t = useTranslations(Astro.params.locale as "en" | "de" | "es" | "fr");
 const { initialQuery = "", translations = {} } = Astro.props;
 ---
 
@@ -20,7 +22,7 @@ const { initialQuery = "", translations = {} } = Astro.props;
         id="searchInput"
         name="q"
         value={initialQuery}
-        placeholder={translations.search?.placeholder || "Search for products, brands, or categories..."}
+        placeholder={t('search.placeholder')}
         class="block w-full pl-10 pr-4 py-3 text-sm sm:text-base rounded-l-lg border-none dark:bg-gray-700 dark:text-white transition-colors duration-200"
         autocomplete="off"
       />
@@ -28,7 +30,7 @@ const { initialQuery = "", translations = {} } = Astro.props;
         type="submit"
         class="px-4 sm:px-6 py-3 cursor-pointer border-none dark:hover:bg-gray-800 hover:bg-gray-800 hover:text-gray-200 font-medium text-sm sm:text-base rounded-r-lg transition-all duration-200"
       >
-        {translations.search?.button || "Search"}
+        {t("search.button")}
       </button>
     </div>
   </form>
