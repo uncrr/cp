@@ -1,13 +1,15 @@
 export const languages = {
   en: 'English',
   de: 'German',
+  es: 'Spanish',
+  fr: 'French'
 };
 
 export const defaultLang = 'en';
 
 export const ui = {
   en: {
-    'page.title': '"PriceCompare - Find the Best Deals Online"',
+    'page.title': 'CompulsivePrices - Find the Best Deals Online',
     'page.description': 'Compare prices across multiple online marketplaces to find the best deals',
     
     'nav.title': 'CompulsivePrices.com',
@@ -16,7 +18,6 @@ export const ui = {
     'search.button': 'Search',
     'search.placeholder': 'Search for products, brands, or categories...',
     
-
     'product.image': 'Image',
     'product.found': 'Product found',
     'product.found_plural': 'Products found',
@@ -25,15 +26,27 @@ export const ui = {
     'product.visit': 'Visit',
     'product.shipping': 'Shipping',
     'product.outOfStock': 'Out of Stock',
-
     
     'filter.title': 'Filters',
     'filter.category': 'Category',
     'filter.category.all': 'All Categories',
     'filter.category.electronics': 'Electronics',
-
-
+    'filter.category.home-kitchen': 'Home & Kitchen',
+    'filter.category.sports-fitness': 'Sports & Fitness',
+    'filter.category.clothing': 'Clothing',
+    'filter.category.books': 'Books',
+    'filter.category.toys-games': 'Toys & Games',
+    'filter.category.beauty': 'Beauty',
+    'filter.category.automotive': 'Automotive',
+    
+    'filter.brand': 'Brand',
+    'filter.brand.all': 'All Brands',
+    
+    'filter.market': 'Marketplace',
+    'filter.market.all': 'All Marketplaces',
+    
     'filter.sort': 'Sort by',
+    'filter.sorted': 'Sorted by',
     'filter.sort.relevance': 'Relevance',
     'filter.sort.priceAsc': 'Price: Low to High',
     'filter.sort.priceDesc': 'Price: High to Low',
@@ -43,8 +56,7 @@ export const ui = {
     'filter.apply': 'Apply Filters',
     'filter.adjust.error': 'Try adjusting your search or filter criteria.',
     'filter.reset': 'Reset Filters',
-
-        
+    
     'footer.header': 'CompulsivePrices.com',
     'footer.description': 'Find the best deals across all major online marketplaces',
     'footer.additional': "We compare prices from Amazon, AliExpress, Alibaba, Walmart, and other major retailers to help you save money. Prices are updated regularly but may vary. Always check the retailer's site for the most current pricing.",
@@ -52,11 +64,168 @@ export const ui = {
     'footer.rights': 'All rights reserved.',
   },
   de: {
+    'page.title': 'CompulsivePrices - Finden Sie die besten Angebote online',
+    'page.description': 'Vergleichen Sie Preise auf mehreren Online-Marktplätzen, um die besten Angebote zu finden',
     
+    'nav.title': 'CompulsivePrices.com',
+    'nav.description': 'Vergleichen Sie Preise auf mehreren Online-Marktplätzen, um die besten Angebote zu finden',
+    
+    'search.button': 'Suchen',
+    'search.placeholder': 'Nach Produkten, Marken oder Kategorien suchen...',
+    
+    'product.image': 'Bild',
+    'product.found': 'Produkt gefunden',
+    'product.found_plural': 'Produkte gefunden',
+    'product.reviews': 'Bewertungen',
+    'product.notfound': 'Keine Produkte gefunden',
+    'product.visit': 'Besuchen',
+    'product.shipping': 'Versand',
+    'product.outOfStock': 'Nicht auf Lager',
+    
+    'filter.title': 'Filter',
+    'filter.category': 'Kategorie',
+    'filter.category.all': 'Alle Kategorien',
+    'filter.category.electronics': 'Elektronik',
+    'filter.category.home-kitchen': 'Haushalt & Küche',
+    'filter.category.sports-fitness': 'Sport & Fitness',
+    'filter.category.clothing': 'Bekleidung',
+    'filter.category.books': 'Bücher',
+    'filter.category.toys-games': 'Spielzeug & Spiele',
+    'filter.category.beauty': 'Schönheit',
+    'filter.category.automotive': 'Automobil',
+    
+    'filter.brand': 'Marke',
+    'filter.brand.all': 'Alle Marken',
+    
+    'filter.market': 'Marktplatz',
+    'filter.market.all': 'Alle Marktplätze',
+    
+    'filter.sort': 'Sortieren nach',
+    'filter.sorted': 'Sortiert nach',
+    'filter.sort.relevance': 'Relevanz',
+    'filter.sort.priceAsc': 'Preis: Niedrig zu Hoch',
+    'filter.sort.priceDesc': 'Preis: Hoch zu Niedrig',
+    'filter.sort.rating': 'Höchste Bewertung',
+    'filter.sort.popular': 'Am beliebtesten',
+    'filter.price.max': 'Maximalpreis',
+    'filter.apply': 'Filter anwenden',
+    'filter.adjust.error': 'Versuchen Sie, Ihre Suche oder Filterkriterien anzupassen.',
+    'filter.reset': 'Filter zurücksetzen',
+    
+    'footer.header': 'CompulsivePrices.com',
+    'footer.description': 'Finden Sie die besten Angebote auf allen großen Online-Marktplätzen',
+    'footer.additional': 'Wir vergleichen Preise von Amazon, AliExpress, Alibaba, Walmart und anderen großen Händlern, um Ihnen beim Sparen zu helfen. Preise werden regelmäßig aktualisiert, können aber variieren. Überprüfen Sie immer die Website des Händlers für die aktuellsten Preise.',
+    'footer.disclaimer': 'Dieser Service wird durch Werbung finanziert. Ihre fortgesetzte Nutzung hilft, diese App ohne Gebühren für Nutzer am Laufen zu halten.',
+    'footer.rights': 'Alle Rechte vorbehalten.',
   },
   es: {
-
+    'page.title': 'CompulsivePrices - Encuentra las Mejores Ofertas Online',
+    'page.description': 'Compara precios en múltiples mercados en línea para encontrar las mejores ofertas',
+    
+    'nav.title': 'CompulsivePrices.com',
+    'nav.description': 'Compara precios en múltiples mercados en línea para encontrar las mejores ofertas',
+    
+    'search.button': 'Buscar',
+    'search.placeholder': 'Buscar productos, marcas o categorías...',
+    
+    'product.image': 'Imagen',
+    'product.found': 'Producto encontrado',
+    'product.found_plural': 'Productos encontrados',
+    'product.reviews': 'reseñas',
+    'product.notfound': 'No se encontraron productos',
+    'product.visit': 'Visitar',
+    'product.shipping': 'Envío',
+    'product.outOfStock': 'Agotado',
+    
+    'filter.title': 'Filtros',
+    'filter.category': 'Categoría',
+    'filter.category.all': 'Todas las Categorías',
+    'filter.category.electronics': 'Electrónica',
+    'filter.category.home-kitchen': 'Hogar y Cocina',
+    'filter.category.sports-fitness': 'Deportes y Fitness',
+    'filter.category.clothing': 'Ropa',
+    'filter.category.books': 'Libros',
+    'filter.category.toys-games': 'Juguetes y Juegos',
+    'filter.category.beauty': 'Belleza',
+    'filter.category.automotive': 'Automotriz',
+    
+    'filter.brand': 'Marca',
+    'filter.brand.all': 'Todas las Marcas',
+    
+    'filter.market': 'Mercado',
+    'filter.market.all': 'Todos los Mercados',
+    
+    'filter.sort': 'Ordenar por',
+    'filter.sorted': 'Ordenado por',
+    'filter.sort.relevance': 'Relevancia',
+    'filter.sort.priceAsc': 'Precio: Menor a Mayor',
+    'filter.sort.priceDesc': 'Precio: Mayor a Menor',
+    'filter.sort.rating': 'Mejor Calificado',
+    'filter.sort.popular': 'Más Popular',
+    'filter.price.max': 'Precio Máximo',
+    'filter.apply': 'Aplicar Filtros',
+    'filter.adjust.error': 'Intenta ajustar tu búsqueda o criterios de filtro.',
+    'filter.reset': 'Restablecer Filtros',
+    
+    'footer.header': 'CompulsivePrices.com',
+    'footer.description': 'Encuentra las mejores ofertas en todos los principales mercados en línea',
+    'footer.additional': 'Comparamos precios de Amazon, AliExpress, Alibaba, Walmart y otros minoristas importantes para ayudarte a ahorrar dinero. Los precios se actualizan regularmente pero pueden variar. Siempre verifica el sitio del minorista para obtener los precios más actualizados.',
+    'footer.disclaimer': 'Este servicio funciona con anuncios. Tu uso continuo ayuda a mantener esta aplicación funcionando sin cobrar a los usuarios.',
+    'footer.rights': 'Todos los derechos reservados.',
   },
   fr: {
+    'page.title': 'CompulsivePrices - Trouvez les Meilleures Offres en Ligne',
+    'page.description': 'Comparez les prix sur plusieurs places de marché en ligne pour trouver les meilleures offres',
+    
+    'nav.title': 'CompulsivePrices.com',
+    'nav.description': 'Comparez les prix sur plusieurs places de marché en ligne pour trouver les meilleures offres',
+    
+    'search.button': 'Rechercher',
+    'search.placeholder': 'Rechercher des produits, marques ou catégories...',
+    
+    'product.image': 'Image',
+    'product.found': 'Produit trouvé',
+    'product.found_plural': 'Produits trouvés',
+    'product.reviews': 'avis',
+    'product.notfound': 'Aucun produit trouvé',
+    'product.visit': 'Visiter',
+    'product.shipping': 'Livraison',
+    'product.outOfStock': 'En rupture de stock',
+    
+    'filter.title': 'Filtres',
+    'filter.category': 'Catégorie',
+    'filter.category.all': 'Toutes les Catégories',
+    'filter.category.electronics': 'Électronique',
+    'filter.category.home-kitchen': 'Maison et Cuisine',
+    'filter.category.sports-fitness': 'Sports et Fitness',
+    'filter.category.clothing': 'Vêtements',
+    'filter.category.books': 'Livres',
+    'filter.category.toys-games': 'Jouets et Jeux',
+    'filter.category.beauty': 'Beauté',
+    'filter.category.automotive': 'Automobile',
+    
+    'filter.brand': 'Marque',
+    'filter.brand.all': 'Toutes les Marques',
+    
+    'filter.market': 'Place de marché',
+    'filter.market.all': 'Toutes les Places de marché',
+    
+    'filter.sort': 'Trier par',
+    'filter.sorted': 'Trié par',
+    'filter.sort.relevance': 'Pertinence',
+    'filter.sort.priceAsc': 'Prix: Croissant',
+    'filter.sort.priceDesc': 'Prix: Décroissant',
+    'filter.sort.rating': 'Mieux Notés',
+    'filter.sort.popular': 'Plus Populaires',
+    'filter.price.max': 'Prix Maximum',
+    'filter.apply': 'Appliquer les Filtres',
+    'filter.adjust.error': 'Essayez d\'ajuster votre recherche ou vos critères de filtrage.',
+    'filter.reset': 'Réinitialiser les Filtres',
+    
+    'footer.header': 'CompulsivePrices.com',
+    'footer.description': 'Trouvez les meilleures offres sur toutes les principales places de marché en ligne',
+    'footer.additional': 'Nous comparons les prix d\'Amazon, AliExpress, Alibaba, Walmart et d\'autres détaillants majeurs pour vous aider à économiser de l\'argent. Les prix sont mis à jour régulièrement mais peuvent varier. Vérifiez toujours le site du détaillant pour les prix les plus actuels.',
+    'footer.disclaimer': 'Ce service fonctionne avec des publicités. Votre utilisation continue aide à maintenir cette application fonctionnant sans facturer les utilisateurs.',
+    'footer.rights': 'Tous droits réservés.',
   },
 } as const;
