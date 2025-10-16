@@ -1,0 +1,26 @@
+{
+  "amazon": {
+    "product_selectors": ["div[data-component-type=\"s-search-result\"]"],
+    "title_selectors": ["h2 a span"],
+    "price_selectors": [".a-price-whole"],
+    "rating_selectors": [".a-icon-alt"]
+  },
+  "aliexpress": {
+    "product_selectors": [".list-item"],
+    "title_selectors": [".item-title"],
+    "price_selectors": [".price-current"],
+    "rating_selectors": [".rating-value"]
+  },
+  "alibaba": {
+    "product_selectors": [".organic-offer-wrapper"],
+    "title_selectors": [".elements-title-normal"],
+    "price_selectors": [".elements-offer-price-normal"],
+    "rating_selectors": [".seb-supplier-review"]
+  },
+  "walmart": {
+    "product_selectors": [".mb1"],
+    "title_selectors": [".f6"],
+    "price_selectors": [".b black f5"],
+    "rating_selectors": [".rating"]
+  }
+}
