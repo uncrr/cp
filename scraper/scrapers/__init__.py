@@ -96,6 +96,62 @@ class BaseScraper:
                 product['rating'] = self._clean_rating(rating_elem.get_text())
                 break
         
+        # Creative link extraction
+        for selector in selectors.get('link_selectors', []):
+            link_elem = element.select_one(selector)
+            if link_elem and link_elem.has_attr('href'):
+                product['link'] = "https://www.amazon.com" + link_elem['href']
+                product['source'] = "Amazon"
+                break
+
+        for selector in selectors.get('description_selectors', []):
+            desc_elem = element.select_one(selector)
+            if desc_elem:
+                product['description'] = desc_elem.get_text().strip()
+                break
+        
+        for selector in selectors.get('image_selectors', []):
+            img_elem = element.select_one(selector)
+            if img_elem and img_elem.has_attr('src'):
+                product['image'] = "https://www.amazon.com" + img_elem['src']
+                break
+
+        for selector in selectors.get('shipping_selectors', []):
+            ship_elem = element.select_one(selector)
+            if ship_elem:
+                product['shipping'] = ship_elem.get_text().strip()
+                break
+        
+        for selector in selectors.get('in_stock_selectors', []):
+            stock_elem = element.select_one(selector)
+            if stock_elem:
+                product['in_stock'] = 'in stock' in stock_elem.get_text().lower()
+                break
+        
+        for selector in selectors.get('vendor_selectors', []):
+            vendor_elem = element.select_one(selector)
+            if vendor_elem:
+                product['vendor'] = vendor_elem.get_text().strip()
+                break
+        
+        for selector in selectors.get('review_count_selectors', []):
+            review_elem = element.select_one(selector)
+            if review_elem:
+                product['review_count'] = self._clean_price(review_elem.get_text())
+                break
+
+        for selector in selectors.get('category_selectors', []):
+            category_elem = element.select_one(selector)
+            if category_elem:
+                product['category'] = category_elem.get_text().strip()
+                break
+
+        for selector in selectors.get('original_price_selectors', []):
+            orig_price_elem = element.select_one(selector)
+            if orig_price_elem:
+                product['original_price'] = self._clean_price(orig_price_elem.get_text())
+                break
+        
         return product if product else None
     
     def _clean_price(self, price_text):
