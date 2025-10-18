@@ -1,25 +1,24 @@
 ---
 export interface Props {
   product: {
-    id: number;
     title: string;
     description: string;
     category: string;
-    brand: string;
     image: string;
-    price: number;
-    originalPrice?: number;
-    market: string;
-    url: string;
+    price: number | 0.0;
+    originalPrice: number | 0.0;
+    link: string;
     shipping: string;
-    rating: number;
-    reviewCount: number;
+    rating: number | 0.0;
+    reviewCount: number | 0.0;
     inStock: boolean;
     vendor: string;
+    source: string;
   };
 }
 
 const { product } = Astro.props;
+
 import {useTranslations } from "../i18n/utils"
 
 const t = useTranslations(Astro.params.locale as "en" | "de" | "es" | "fr");
@@ -33,7 +32,6 @@ const marketColors = {
   'default': 'bg-gray-500'
 };
 
-// const marketColor = marketColors[product.market] || marketColors.default;
 ---
 
 <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-all duration-200 mx-auto w-full max-w-2xl">
@@ -48,8 +46,10 @@ const marketColors = {
       <div class="flex-1 min-w-0">
         <!-- Market Badge -->
         <div class="flex items-center mb-2">
-          <span class="inline-block w-3 h-3 rounded-full mr-2 flex-shrink-0 ${marketColor}"></span>
-          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{product.market}</span>
+          {product.source && product.source === "Amazon" &&
+          <span class="inline-block w-3 h-3 rounded-full mr-2 flex-shrink-0 ${marketColor==product.source ? marketColor : hidden} bg-yellow-500"></span>
+        }
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{product.source}</span>
           <span class="mx-2 text-gray-400">•</span>
           <span class="text-xs text-gray-500 dark:text-gray-400 truncate">{product.vendor}</span>
         </div>
@@ -83,7 +83,7 @@ const marketColors = {
           </div>
           
           <div class="text-sm text-gray-500 dark:text-gray-400 flex flex-wrap gap-2">
-            <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{product.category.replace('-', ' ')}</span>
+            <span class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">{product.category}</span>
           </div>
         </div>
         
@@ -92,7 +92,7 @@ const marketColors = {
           <div class="flex items-center gap-3">
             <div class="flex items-baseline gap-2">
               <span class="text-2xl font-bold dark:text-white">
-                ${product.price.toFixed(2)}
+                ${product.price}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
                 <span class="text-lg text-gray-500 dark:text-gray-400 line-through">
@@ -112,7 +112,7 @@ const marketColors = {
               {t('product.shipping')}: {product.shipping}
             </div>
             <a 
-              href={product.url}
+              href={product.link}
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto dark:text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 text-center flex items-center justify-center gap-2"
