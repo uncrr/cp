@@ -19,8 +19,8 @@ export const ui = {
     'search.placeholder': 'Search for products, brands, or categories...',
     
     'product.image': 'Image',
-    'product.found': 'Product found',
-    'product.found_plural': 'Products found',
+    'product.found': 'Product found for',
+    'product.found_plural': 'Products found for',
     'product.reviews': 'reviews',
     'product.notfound': 'No products found',
     'product.visit': 'Visit',
@@ -74,8 +74,8 @@ export const ui = {
     'search.placeholder': 'Nach Produkten, Marken oder Kategorien suchen...',
     
     'product.image': 'Bild',
-    'product.found': 'Produkt gefunden',
-    'product.found_plural': 'Produkte gefunden',
+    'product.found': 'Produkt gefunden für',
+    'product.found_plural': 'Produkte gefunden für',
     'product.reviews': 'Bewertungen',
     'product.notfound': 'Keine Produkte gefunden',
     'product.visit': 'Besuchen',
@@ -129,8 +129,8 @@ export const ui = {
     'search.placeholder': 'Buscar productos, marcas o categorías...',
     
     'product.image': 'Imagen',
-    'product.found': 'Producto encontrado',
-    'product.found_plural': 'Productos encontrados',
+    'product.found': 'Producto encontrado para',
+    'product.found_plural': 'Productos encontrados para',
     'product.reviews': 'reseñas',
     'product.notfound': 'No se encontraron productos',
     'product.visit': 'Visitar',
@@ -184,8 +184,8 @@ export const ui = {
     'search.placeholder': 'Rechercher des produits, marques ou catégories...',
     
     'product.image': 'Image',
-    'product.found': 'Produit trouvé',
-    'product.found_plural': 'Produits trouvés',
+    'product.found': 'Produit trouvé pour',
+    'product.found_plural': 'Produits trouvés pour',
     'product.reviews': 'avis',
     'product.notfound': 'Aucun produit trouvé',
     'product.visit': 'Visiter',
