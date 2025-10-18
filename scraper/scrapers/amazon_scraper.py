@@ -26,11 +26,19 @@ class AmazonScraper(BaseScraper):
         query = urllib.parse.quote(params['search_input'])
         category_map = {
             'electronics': 'electronics',
-            'books': 'stripbooks',
+            'books': 'books',
             'home': 'garden',
-            'clothing': 'fashion'
+            'clothing': 'fashion',
+            'toys': 'toys-and-games',
+            'sports': 'sporting',
+            'beauty': 'beauty',
+            'automotive': 'automotive',
+            'grocery': 'grocery',
+            'health': 'health-personal-care',
+            'tools': 'tools',
         }
         
+        # Default to 'aps' (All Products Search) if category not found
         category = category_map.get(params['category'], 'aps')
         url = f"{base_url}?k={query}&i={category}"
         
@@ -60,6 +68,12 @@ class AmazonScraper(BaseScraper):
                 '.a-size-medium',
                 '.a-text-normal'
             ],
+            'description_selectors': [
+                '.a-size-base-plus',
+                '.a-size-base',
+                '.a-text-normal'
+            ]
+            ,
             'price_selectors': [
                 '.a-price-whole',
                 '.a-offscreen',
@@ -69,5 +83,45 @@ class AmazonScraper(BaseScraper):
                 '.a-icon-alt',
                 '.a-star-small',
                 '.a-size-small .a-color-base'
+            ],
+            'link_selectors': [
+                'h2 a',
+                '.a-link-normal',
+                '.a-text-normal'
+            ],
+            'image_selectors': [
+                'img.s-image',
+                '.s-image',
+                '.a-section img'
+            ],
+            'shipping_selectors': [
+                '.a-color-secondary .a-size-base',
+                '.s-shipping-width',
+                '.a-text-normal .a-color-secondary'
+            ],
+            'in_stock_selectors': [
+                '.a-color-success',
+                '.s-stock-status',
+                '.a-text-success'
+            ],
+            'category_selectors': [
+                '#searchDropdownBox',
+                '.a-dropdown-prompt',
+                '.s-navigation-item'
+            ],
+            'review_count_selectors': [
+                '.a-size-base',
+                '.s-review-count',
+                '.a-text-normal .a-size-base'
+            ],
+            'original_price_selectors': [
+                '.a-text-price .a-offscreen',
+                '.s-price .a-text-price',
+                '.a-price .a-text-price'
+            ],
+            'vendor_selectors': [
+                '.a-size-base.a-color-secondary',
+                '.s-merchant-name',
+                '.a-text-normal .a-color-secondary'
             ]
         }
