@@ -1,0 +1,80 @@
+{
+    "source": "amazon",
+    "products": [
+        {
+            "title": "The Ice Cream Machine: 6 Deliciously Different Stories with the Same Exact Name!",
+            "description":"Make any delicious ice cream flavor",
+            "category":"automotive",
+            "originalPrice" : 100,
+            "price": "9.32",
+            "rating": "4.5",
+            "link": "www.amazon.com/Ice-Cream-Machine-Adam-Rubin-ebook/dp/B0951N79PH/ref=sr_1_1?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-1",
+            "image": "",
+            "source":"Amazon",
+            "inStock" : true,
+            "vendor" : "Tesla motors",
+            "reviewCount": 2223,
+            "shipping" : "Free"
+        },
+        {
+            "title": "Ninja CREAMi Cookbook for Beginners (Ninja Cookbooks)",
+            "price": "14.",
+            "rating": "4.5",
+            "link": "/Ninja-CREAMi-Cookbook-Beginners-Cookbooks/dp/1647399866/ref=sr_1_2?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-2"
+        },
+        {
+            "title": "Cuisinart Ice Cream Maker Cookbook for Beginners: Make Every Scoop a Celebration with Delicious Cuisinart Ice Cream Maker Recipes | Enjoy Homemade Ice Creams, Sorbets, Gelatos, and More with Ease",
+            "price": "2.",
+            "rating": "4.7",
+            "link": "/Cuisinart-Cream-Maker-Cookbook-Beginners-ebook/dp/B0F66GV2YK/ref=sr_1_3?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-3"
+        },
+        {
+            "title": "Cuisinart Ice Cream Cookbook for Beginners: Create Perfect Frozen Treats with Cuisinart Ice Cream Recipes | Enjoy Classic Ice Creams, Fruity Sorbets, Rich Gelatos, Creamy Frozen Yogurts & More",
+            "price": "15.",
+            "rating": "4.8",
+            "link": "/Cuisinart-Ice-Cream-Cookbook-Beginners/dp/B0FJ5K5CMX/ref=sr_1_4?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-4"
+        },
+        {
+            "title": "Cuisinart Ice Cream Maker Cookbook: 2000 Days of Frozen Treats, Sorbets & Desserts for the Whole Family",
+            "price": "0.",
+            "rating": "5.0",
+            "link": "/Cuisinart-Ice-Cream-Maker-Cookbook-ebook/dp/B0FPX4Q22D/ref=sr_1_5?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-5"
+        },
+        {
+            "title": "The Complete Cuisinart Homemade Frozen Yogurt, Sorbet, Gelato, Ice Cream Maker Book: 100 Decadent and Fun Recipes for your 2-Quart ICE-30BC",
+            "price": "12.",
+            "rating": "4.6",
+            "link": "/Complete-Cuisinart-Homemade-Frozen-Yogurt/dp/1945056061/ref=sr_1_6?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-6"
+        },
+        {
+            "title": "Old-Fashioned Homemade Ice Cream: With 58 Original Recipes",
+            "price": "4.",
+            "rating": "4.4",
+            "link": "/Old-Fashioned-Homemade-Ice-Cream-Original/dp/0486244954/ref=sr_1_7?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-7"
+        },
+        {
+            "title": "UJR SLUSHIE MACHINE COOKBOOK: Preset-Perfect Recipes for Slushies, Smoothies, Margaritas, Ice Cream, Soft Serve, Frozen Cocktails & More—Made for the 6-Preset All-in-One System",
+            "price": "9.",
+            "rating": "4.4",
+            "link": "/SLUSHIE-MACHINE-COOKBOOK-All-One/dp/B0FGWL39G3/ref=sr_1_8?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-8"
+        },
+        {
+            "title": "Make Your Own Ice Cream: Classic Recipes for Ice Cream, Sorbet, Italian Ice, Sherbet and Other Frozen Desserts",
+            "price": "8.",
+            "rating": "4.0",
+            "link": "/Make-Your-Own-Ice-Cream/dp/0486822176/ref=sr_1_9?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-9"
+        },
+        {
+            "title": "CUISINART ICE CREAM MAKER COOKBOOK FOR BEGINNERS 2026: 75+ Quick & Easy Recipes for Homemade Ice Cream, Sorbet, Gelato, Mix-Ins & More | Step-by-Step Guide to Using Your Cuisinart with Confidence",
+            "price": "13.",
+            "rating": "5.0",
+            "link": "/CUISINART-CREAM-MAKER-COOKBOOK-BEGINNERS/dp/B0FPBJHRGH/ref=sr_1_10?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-10"
+        }
+    ],
+    "search_params": {
+        "search_input": "ice cream machine",
+        "category": "books",
+        "max_price": 100.5,
+        "sort_by": "relevant"
+    }
+}
