@@ -34,6 +34,7 @@ async def test_single_scraper():
     for i, product in enumerate(results['products'][:10], 1):
         print(f"{i}. {product.get('title', 'No title')}")
         print(f"   💰 {product.get('price', 'No price')}")
+        print(f"   🔗 {product.get('link', 'No link')}")
         print()
 
 async def test_httpbin():
