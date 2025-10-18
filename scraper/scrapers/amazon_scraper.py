@@ -19,23 +19,23 @@ class AmazonScraper(BaseScraper):
         except Exception as e:
             print(f"💥 Amazon scraping error: {e}")
         
-        return {'source': 'amazon', 'products': []}
+        return {'source': 'amazon', 'products': [], 'search_params': params}
     
     def build_url(self, params):
         base_url = "https://www.amazon.com/s"
         query = urllib.parse.quote(params['search_input'])
         category_map = {
             'electronics': 'electronics',
-            'books': 'books',
-            'home': 'garden',
-            'clothing': 'fashion',
-            'toys': 'toys-and-games',
-            'sports': 'sporting',
+            'books': 'stripbooks',
+            'home & kitchen': 'kitchen',
+            'arts & crafts': 'arts-crafts',
+            'girls': 'fashion-girls',
+            'boys': 'fashion-boys',
+            'baby': 'baby-products',
             'beauty': 'beauty',
             'automotive': 'automotive',
-            'grocery': 'grocery',
-            'health': 'health-personal-care',
-            'tools': 'tools',
+            'software' : 'software',
+            'industrial & scientific': 'industrial'
         }
         
         # Default to 'aps' (All Products Search) if category not found
@@ -48,7 +48,9 @@ class AmazonScraper(BaseScraper):
             'price_high_to_low': 'price-desc-rank',
             'highest_rating': 'review-rank',
             'most_popular': 'popularity-rank',
-            'relevant': 'relevance-rank'
+            'review-rank': 'review-rank',
+            'best-sellers': 'exact-aware-popularity-rank',
+            'relevant': 'relevanceblender'
         }
         
         if params.get('sort_by') in sort_map:
@@ -111,6 +113,7 @@ class AmazonScraper(BaseScraper):
             ],
             'review_count_selectors': [
                 '.a-size-base',
+                # '.a-size-mini',
                 '.s-review-count',
                 '.a-text-normal .a-size-base'
             ],
