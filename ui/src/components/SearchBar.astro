@@ -1,12 +1,21 @@
 ---
 export interface Props {
   initialQuery?: string;
-  translations?: any;
+  selectedCategory?: string;
+  selectedSort?: string;
+  priceRange?: { min: number; max: number };
 }
+
 import {useTranslations } from "../i18n/utils"
 
 const t = useTranslations(Astro.params.locale as "en" | "de" | "es" | "fr");
-const { initialQuery = "", translations = {} } = Astro.props;
+const { 
+  initialQuery,
+  selectedCategory,
+  selectedSort,
+  priceRange,
+} = Astro.props;
+
 ---
 
 <div class="max-w-2xl mx-auto px-2">
@@ -27,30 +36,63 @@ const { initialQuery = "", translations = {} } = Astro.props;
         autocomplete="off"
       />
       <button
+        id="searchButton"
         type="submit"
         class="px-4 sm:px-6 py-3 cursor-pointer border-none dark:hover:bg-gray-800 hover:bg-gray-800 hover:text-gray-200 font-medium text-sm sm:text-base rounded-r-lg transition-all duration-200"
       >
         {t("search.button")}
       </button>
+        <input hidden type="text" id="sort" name="sort" value={selectedSort}>
+        <input hidden type="text" id="category" name="category" value={selectedCategory}>
+        <input hidden type="number" id="maxprice" name="maxprice" value={priceRange?.max} >
+
     </div>
   </form>
   
   <script>
-    document.getElementById('searchForm')?.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const query = document.getElementById('searchInput').value.trim();
-      if (query) {
-        if (typeof window.filterProducts === 'function') {
-          window.filterProducts(query);
-        }
-      }
-    });
+    // Get the form element
+    const form = document.getElementById('searchForm');
+
+   form.addEventListener('submit', async (event) => {
+    // Prevent the default form submission (which would cause a page reload)
+    event.preventDefault();
     
-    document.getElementById('searchInput')?.addEventListener('input', function() {
-      const query = this.value.trim();
-      if (typeof window.filterProducts === 'function') {
-        window.filterProducts(query);
+    // Get the values from the form inputs
+    const query = form.elements.q.value;
+    const category = form.elements.category.value;
+    const maxPrice = form.elements.maxprice.value;
+    const sortBy = form.elements.sort.value;
+    
+    try {
+      // Send a POST request to your Python API endpoint
+      const response = await fetch('http://0.0.0.0:8000/api/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          search_input: query,
+          category: category,
+          max_price: maxPrice,
+          sort_by: sortBy
+        })
+      });
+
+      // Handle the response from the API
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
       }
-    });
-  </script>
+
+      const data = await response.json();
+      console.log('Search results:', data);
+
+      // Display the results on the page
+      JSON.stringify(data, null, 2);
+
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+    }
+  });
+
+   </script>
 </div>
