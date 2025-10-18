@@ -2,19 +2,22 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import SearchBar from '../../components/SearchBar.astro';
-import Filters from '../../components/Filters.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import Footer from '../../components/Footer.astro';
 import { getLangFromUrl, useTranslations } from '../../i18n/utils';
 
 
 // Import product data
-import productData from '../../data/products.json';
+import productData from '../../../../scraper/products.json';
 
-const { products, categories } = productData;
+const { products, search_params } = productData;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const selectedCategory = t('filter.category.all');
+const selectedSort = t('filter.sort.relevance');
+const priceRange = { min: 0, max: 10000 };
 
 export async function getStaticPaths() {
   return [
@@ -28,54 +31,14 @@ export async function getStaticPaths() {
 
 // Get language - simplified
 const url = new URL(Astro.request.url);
-const pathSegments = url.pathname.split('/').filter(Boolean);
+// const pathSegments = url.pathname.split('/').filter(Boolean);
 
 
 // Get URL parameters
 const searchQuery = url.searchParams.get('q') || '';
-const categoryFilter = url.searchParams.get('category') || '';
+const categoryFilter = url.searchParams.get('category') || t('filter.category.all');
 const priceFilter = url.searchParams.get('price') || '1000';
-const sortFilter = url.searchParams.get('sort') || 'relevance';
-
-// Filter products (same logic as before)
-let filteredProducts = [...products];
-
-if (searchQuery) {
-  const query = searchQuery.toLowerCase();
-  filteredProducts = filteredProducts.filter(product => 
-    product.title.toLowerCase().includes(query) ||
-    product.description.toLowerCase().includes(query) ||
-    product.brand.toLowerCase().includes(query) ||
-    product.category.toLowerCase().includes(query)
-  );
-}
-
-if (categoryFilter) {
-  filteredProducts = filteredProducts.filter(product => product.category === categoryFilter);
-}
-
-
-if (priceFilter && priceFilter !== '1000') {
-  const maxPrice = parseInt(priceFilter);
-  filteredProducts = filteredProducts.filter(product => {
-    const minProductPrice = Math.min(...product.markets.map(m => m.price));
-    return minProductPrice <= maxPrice;
-  });
-}
-
-// Apply sorting
-if (sortFilter === 'price-low') {
-  filteredProducts.sort((a, b) => Math.min(...a.markets.map(m => m.price)) - Math.min(...b.markets.map(m => m.price)));
-} else if (sortFilter === 'price-high') {
-  filteredProducts.sort((a, b) => Math.min(...b.markets.map(m => m.price)) - Math.min(...a.markets.map(m => m.price)));
-} else if (sortFilter === 'rating') {
-  filteredProducts.sort((a, b) => b.rating - a.rating);
-} else if (sortFilter === 'popular') {
-  filteredProducts.sort((a, b) => b.reviewCount - a.reviewCount);
-}
-
-// Serialize for client-side
-const serializedProducts = JSON.stringify(products);
+const sortFilter = url.searchParams.get('sort') || t('filter.sort.relevance');
 ---
 
 <Layout 
@@ -88,19 +51,186 @@ const serializedProducts = JSON.stringify(products);
     <div class="max-w-2xl lg:max-w-6xl mx-auto">
       <!-- Search Section -->
       <section class="mb-6 sm:mb-8 px-2">
-        <SearchBar initialQuery={searchQuery} />
+        <SearchBar initialQuery={searchQuery}
+                   selectedCategory={categoryFilter}
+                   selectedSort={sortFilter}
+                   priceRange={{ min: 0, max: parseInt(priceFilter)}}
+                  />
       </section>
       
       <div class="flex flex-col lg:flex-row gap-4 sm:gap-6">
         <!-- Filters Sidebar -->
         <aside class="lg:w-64 flex-shrink-0 order-1 mr-10">
           <div class="max-w-md mx-auto lg:max-w-none">
-            <Filters 
-              categories={categories} 
-              selectedCategory={categoryFilter}
-              selectedSort={sortFilter}
-              priceRange={{ min: 0, max: parseInt(priceFilter) }}
-            />
+            <div class="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 w-full transition-colors duration-200">
+  <div class="flex justify-between items-center mb-3 sm:mb-4">
+    <h3 class="font-semibold text-base sm:text-lg text-gray-800 dark:text-gray-200">
+      {t('filter.title')}
+    </h3>
+    <button 
+      id="resetFilters" 
+      class="text-xs sm:text-sm text-gray-700 border-none cursor-pointer rounded hover:bg-gray-300 dark:text-gray-100 dark:bg-gray-700 dark:text-white hover:text-gray-700 dark:hover:bg-gray-200 dark:hover:text-gray-700 font-medium transition-colors duration-200"
+    >
+      {t('filter.reset')}
+    </button>
+  </div>
+  
+  <div class="space-y-4 sm:space-y-6">
+    <!-- Category Filter -->
+    <div>
+      <h4 class="font-medium text-gray-700 dark:text-gray-300 text-sm sm:text-base mb-1 sm:mb-2">
+        {t('filter.category')}
+      </h4>
+      <select 
+        id="categorySelected" 
+        class="w-full p-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
+      >
+        <option value="">{t('filter.category.all')}</option>
+      
+            <option value={t('filter.category.books')} selected={selectedCategory === t('filter.category.books')}>
+              {t('filter.category.books')}
+            </option>
+            <option value={t('filter.category.electronics')} selected={selectedCategory === t('filter.category.electronics')}>
+              {t('filter.category.electronics')}
+            </option>
+            <option value={t('filter.category.automotive')} selected={selectedCategory === t('filter.category.automotive')}>
+              {t('filter.category.automotive')}
+            </option>
+            <option value={t('filter.category.beauty')} selected={selectedCategory === t('filter.category.beauty')}>
+              {t('filter.category.beauty')}
+            </option>
+            <option value={t('filter.category.home-kitchen')} selected={selectedCategory === t('filter.category.home-kitchen')}>
+              {t('filter.category.home-kitchen')}
+            </option>
+            <option value={t('filter.category.clothing')} selected={selectedCategory === t('filter.category.clothing')}>
+              {t('filter.category.clothing')}
+            </option>
+          <option value={t('filter.category.sports-fitness')} selected={selectedCategory === t('filter.category.sports-fitness')}>
+              {t('filter.category.sports-fitness')}
+            </option>
+      </select>
+    </div>
+    
+    <!-- Price Range Filter -->
+    <div>
+      <h4 class="font-medium text-gray-700 dark:text-gray-300 text-sm sm:text-base mb-1 sm:mb-2">
+        {t('filter.price.max')}: $<span id="priceRangeValue">{priceRange.max}</span>
+      </h4>
+      <div class="flex items-center space-x-2 mb-1 sm:mb-2">
+        <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">$0</span>
+        <input 
+          type="range" 
+          id="priceMaxSelected" 
+          min="0" 
+          max="10000" 
+          value={priceRange.max}
+          class="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer slider transition-colors duration-200"
+        />
+        <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">$10,000+</span>
+      </div>
+    </div>
+    
+    <!-- Sort Options -->
+    <div>
+      <h4 class="font-medium text-gray-700 dark:text-gray-300 text-sm sm:text-base mb-1 sm:mb-2">
+        {t('filter.sort')}
+      </h4>
+      <select 
+        id="sortOptionSelected" 
+        class="w-full p-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
+      >
+        <option value="relevance" selected={selectedSort === "relevance"}>
+          {t('filter.sort.relevance')}
+        </option>
+        <option value="price-low" selected={selectedSort === "price-low"}>
+          {t('filter.sort.priceAsc')}
+        </option>
+        <option value="price-high" selected={selectedSort === "price-high"}>
+          {t('filter.sort.priceDesc')}
+        </option>
+        <option value="rating" selected={selectedSort === "rating"}>
+          {t('filter.sort.rating')}
+        </option>
+        <option value="popular" selected={selectedSort === "popular"}>
+          {t('filter.sort.popular')}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update price range display
+  const priceRange = document.getElementById('priceMaxSelected');
+  const priceRangeValue = document.getElementById('priceRangeValue');
+  
+  if (priceRange && priceRangeValue) {
+    priceRange.addEventListener('input', function() {
+      priceRangeValue.textContent = this.value;
+      // Auto-apply when price range changes
+      setTimeout(() => applyFilters(), 300);
+    });
+  }
+  
+  // Auto-apply when filters change
+  document.getElementById('categorySelected')?.addEventListener('change', function() {
+    applyFilters();
+  });
+  
+    document.getElementById('sortOptionSelected')?.addEventListener('change', function() {
+    applyFilters();
+  });
+  
+  document.getElementById('resetFilters')?.addEventListener('click', function() {
+    document.getElementById('categorySelected').value = '';
+    document.getElementById('priceMaxSelected').value = 1000;
+    document.getElementById('priceRangeValue').textContent = '1000';
+    document.getElementById('sortOptionSelected').value = 'relevance';
+    applyFilters();
+  });
+  
+  function applyFilters() {
+    const category = document.getElementById('categoryFilter')?.value || '';
+    const maxPrice = document.getElementById('priceRange')?.value || 1000;
+    const sortBy = document.getElementById('sortOptions')?.value || 'relevance';
+    
+    if (typeof window.applyFilters === 'function') {
+      window.applyFilters(category, maxPrice, sortBy);
+    }
+  }
+</script>
+
+<style>
+  .slider::-webkit-slider-thumb {
+    appearance: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .slider::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .dark .slider::-webkit-slider-thumb {
+    border: 2px solid #1f2937;
+  }
+  
+  .dark .slider::-moz-range-thumb {
+    border: 2px solid #1f2937;
+  }
+</style>
+
           </div>
         </aside>
         
@@ -108,33 +238,34 @@ const serializedProducts = JSON.stringify(products);
         <section class="flex-1 order-2 lg:order-2">
           <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 gap-2 px-2">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 text-center sm:text-left">
-              {filteredProducts.length === 1 
-                ? ("{count} " + t('product.found')).replace('{count}', filteredProducts.length)
-                : ("{count} " + t('product.found_plural')).replace('{count}', filteredProducts.length)
+              {products.length === 1 
+                ? ("{count} " + t('product.found')).replace('{count}', products.length)
+                : ("{count} " + t('product.found_plural')).replace('{count}', products.length)
               }
-              {searchQuery && ` for "${searchQuery}"`}
+              {search_params.search_input? `"${search_params.search_input}"` : ''}
             </h2>
             
             <div class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center sm:text-right">
               {t('filter.sorted')}: 
               <span class="font-medium ml-1">
-                {sortFilter === 'relevance' ? t('filter.sort.relevance') :
-                 sortFilter === 'price-low' ? t('filter.sort.priceAsc') :
-                 sortFilter === 'price-high' ? t('filter.sort.priceDesc') :
-                 sortFilter === 'rating' ? t('filter.sort.rating') : 
+                {
+                sortFilter === t('filter.sort.relevance') ? t('filter.sort.relevance') :
+                 sortFilter === t('filter.sort.priceAsc') ? t('filter.sort.priceAsc') :
+                 sortFilter === t('filter.sort.priceDesc') ? t('filter.sort.priceDesc') :
+                 sortFilter === t('filter.sort.rating') ? t('filter.sort.rating') : 
                  t('filter.sort.popular')}
               </span>
             </div>
           </div>
           
-          {filteredProducts.length > 0 ? (
+          {products.length > 0 ? (
             <div class="grid grid-cols-1 gap-4 sm:gap-6 px-2">
-              {filteredProducts.map(product => (
+              {products.map(product => (
                 <ProductCard product={product} />
               ))}
             </div>
           ) : (
-            <div class="text-center py-8 sm:py-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 max-w-md mx-auto">
+            <div class="text-center py-8 sm:py-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 max-w-md mx-auto lg:mb-72">
               <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -144,14 +275,6 @@ const serializedProducts = JSON.stringify(products);
               <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {t('filter.adjust.error')}
               </p>
-              <div class="mt-4 sm:mt-6">
-                <button 
-                  id="resetAllFilters" 
-                  class="inline-flex items-center px-3 sm:px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                >
-                  {t('filter.reset')}
-                </button>
-              </div>
             </div>
           )}
         </section>
@@ -162,109 +285,6 @@ const serializedProducts = JSON.stringify(products);
   <Footer/>
   
   <script>
-    // Store products for client-side filtering
-    const allProducts = {serializedProducts};
-    
-    // Simple filtering functions
-    function filterProducts(query) {
-      applyFilters(
-        document.getElementById('categoryFilter')?.value || '',
-        document.getElementById('brandFilter')?.value || '',
-        document.getElementById('priceRange')?.value || 1000,
-        document.getElementById('sortOptions')?.value || 'relevance'
-      );
-    }
-    
-    function applyFilters(category, brand, maxPrice, sortBy) {
-      let filtered = [...allProducts];
-      const searchQuery = document.getElementById('searchInput')?.value.trim() || '';
-      
-      // Apply filters (same logic as server-side)
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        filtered = filtered.filter(product => 
-          product.title.toLowerCase().includes(query) ||
-          product.description.toLowerCase().includes(query) ||
-          product.brand.toLowerCase().includes(query) ||
-          product.category.toLowerCase().includes(query)
-        );
-      }
-      
-      if (category) filtered = filtered.filter(p => p.category === category);
-      if (brand) filtered = filtered.filter(p => p.brand === brand);
-      if (maxPrice !== '1000') {
-        filtered = filtered.filter(p => Math.min(...p.markets.map(m => m.price)) <= parseInt(maxPrice));
-      }
-      
-      // Apply sorting
-      if (sortBy === 'price-low') filtered.sort((a, b) => Math.min(...a.markets.map(m => m.price)) - Math.min(...b.markets.map(m => m.price)));
-      else if (sortBy === 'price-high') filtered.sort((a, b) => Math.min(...b.markets.map(m => m.price)) - Math.min(...a.markets.map(m => m.price)));
-      else if (sortBy === 'rating') filtered.sort((a, b) => b.rating - a.rating);
-      else if (sortBy === 'popular') filtered.sort((a, b) => b.reviewCount - a.reviewCount);
-      
-      displayFilteredProducts(filtered);
-      updateURL(searchQuery, category, brand, maxPrice, sortBy);
-    }
-    
-    function displayFilteredProducts(filtered) {
-      const container = document.querySelector('.min-w-0 .grid, .min-w-0 .text-center');
-      const countEl = document.querySelector('.min-w-0 h2');
-      const searchQuery = document.getElementById('searchInput')?.value.trim() || '';
-      
-      if (countEl) {
-        const countText = filtered.length === 1 
-          ? `1 ${t('product.found')}`
-          : `${filtered.length} ${t('product.found_plural')}`;
-        countEl.innerHTML = `${countText}${searchQuery ? ` for "${searchQuery}"` : ''}`;
-      }
-      
-      if (filtered.length > 0) {
-        // Simplified product display - you can expand this as needed
-        container.innerHTML = '<div class="grid grid-cols-1 gap-6">Products found: ' + filtered.length + '</div>';
-      } else {
-        container.innerHTML = `
-          <div class="text-center py-12 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-100">No products found</h3>
-            <p class="mt-1 text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria</p>
-            <div class="mt-6">
-              <button id="resetAllFilters" class="px-4 py-2 bg-primary-600 text-white rounded-md">Reset all filters</button>
-            </div>
-          </div>
-        `;
-        document.getElementById('resetAllFilters').addEventListener('click', resetAllFilters);
-      }
-    }
-    
-    function updateURL(search, category, brand, price, sort) {
-      const params = new URLSearchParams();
-      if (search) params.set('q', search);
-      if (category) params.set('category', category);
-      if (brand) params.set('brand', brand);
-      if (price !== '1000') params.set('price', price);
-      if (sort !== 'relevance') params.set('sort', sort);
-      window.history.replaceState({}, '', params.toString() ? `?${params}` : '');
-    }
-    
-    function resetAllFilters() {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('categoryFilter').value = '';
-      document.getElementById('brandFilter').value = '';
-      document.getElementById('priceRange').value = 1000;
-      document.getElementById('priceRangeValue').textContent = '1000';
-      document.getElementById('sortOptions').value = 'relevance';
-      applyFilters('', '', 1000, 'relevance');
-    }
-    
-    // Make functions global
-    window.filterProducts = filterProducts;
-    window.applyFilters = applyFilters;
-    
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('resetAllFilters')?.addEventListener('click', resetAllFilters);
-    });
+  
   </script>
 </Layout>
