@@ -1,5 +1,5 @@
 
-# CompulsivePrice.com (will likely get sued if this is published)
+# CompulsivePrice.com
 
 ![App](/asset/en.png)
 
@@ -18,10 +18,10 @@ Key files and roles
 - `scraper/main.py` — example entry that creates `CreativeScraper` and runs a sample search (async). Running this will print results and can be used to populate `scraper/products.json` (see `dev` scripts).
 - `scraper/api.py` — FastAPI app that exposes `/api/search` and a `/api/health` route. It calls the Amazon scraper and writes `products.json` when used from the endpoint.
 - `scraper/data_processor.py` — normalizes different source product shapes to a common format used by the UI (fields like `title`, `price`, `rating`, `reviews`, `source`, `url`, `image`).
-- `scraper/scrapers/` — site-specific scrapers and a `BaseScraper`:
- 	- `__init__.py` — `BaseScraper` provides `fetch_page`, creative parsing helpers and fallback strategies.
- 	- `amazon_scraper.py` — implemented and contains `build_url`, selectors and parsing fallbacks.
- 	- `aliexpress_scraper.py`, `alibaba_scraper.py`, `walmart_scraper.py` — present but currently stubs (print-not-implemented).
+- `scraper/scrapers/` — site-specific scrapers and a `BaseScraper`
+- `scraper/scrapers/__init__.py` — `BaseScraper` provides `fetch_page`, creative parsing helpers and fallback strategies.
+- `scraper/scrapers/amazon_scraper.py` — implemented and contains `build_url`, selectors and parsing fallbacks.
+- `scraper/scrapers/aliexpress_scraper.py`, `alibaba_scraper.py`, `walmart_scraper.py` — present but currently stubs (print-not-implemented).
 - `scraper/products.json` — example output: contains `source`, `products[]`, and `search_params`. The UI imports this file directly.
 - `dev-entrypoint.sh` — convenient script that runs the scraper and the Astro dev server concurrently.
 - `dev-scraper-entrypoint.sh` — runs the scraper once (calls `scraper/main.py`).
@@ -43,7 +43,7 @@ Project-specific conventions & patterns
 
 ## Developer guide — setup & run
 
-### Run the whole project Setup prep (scraper + UI dev server).
+### Run the whole project Setup prep (scraper + UI dev server)
 
 Make the entrypoint executable or just run it:
 
@@ -56,7 +56,7 @@ chmod +x prep.sh
 ./prep.sh
 ```
 
-### Run the whole project (scraper + UI dev server).
+### Run the whole project (scraper + UI dev server)
 
 Make the entrypoint executable or just run it:
 
