@@ -1,0 +1,112 @@
+
+# CompulsivePrice.com (will likely get sued if this is published)
+
+![App](/asset/en.png)
+
+CompulsivePrice is a small experimental project that demonstrates a product scraping pipeline + an Astro UI that displays scraped products. supports english, deutsch, french and spanish languages.
+
+![Language](/asset/language.png)
+
+High-level overview
+
+- Scraper (Python): located in the `scraper/` folder. Uses an async, modular scraper implementation (`scraper/scrapers/`) and a small `CreativeScraper` orchestrator to run each site-specific scraper concurrently and normalize results into `scraper/products.json`.
+- API (optional): `scraper/api.py` exposes a small FastAPI endpoint (`POST /api/search`) that exercises the scrapers and writes output to `products.json`.
+- UI (Astro + React): located in the `ui/` folder. The main listing page (`ui/src/pages/[locale]/index.astro`) statically imports `scraper/products.json` and renders product cards using the components in `ui/src/components/`.
+
+Key files and roles
+
+- `scraper/main.py` — example entry that creates `CreativeScraper` and runs a sample search (async). Running this will print results and can be used to populate `scraper/products.json` (see `dev` scripts).
+- `scraper/api.py` — FastAPI app that exposes `/api/search` and a `/api/health` route. It calls the Amazon scraper and writes `products.json` when used from the endpoint.
+- `scraper/data_processor.py` — normalizes different source product shapes to a common format used by the UI (fields like `title`, `price`, `rating`, `reviews`, `source`, `url`, `image`).
+- `scraper/scrapers/` — site-specific scrapers and a `BaseScraper`:
+ 	- `__init__.py` — `BaseScraper` provides `fetch_page`, creative parsing helpers and fallback strategies.
+ 	- `amazon_scraper.py` — implemented and contains `build_url`, selectors and parsing fallbacks.
+ 	- `aliexpress_scraper.py`, `alibaba_scraper.py`, `walmart_scraper.py` — present but currently stubs (print-not-implemented).
+- `scraper/products.json` — example output: contains `source`, `products[]`, and `search_params`. The UI imports this file directly.
+- `dev-entrypoint.sh` — convenient script that runs the scraper and the Astro dev server concurrently.
+- `dev-scraper-entrypoint.sh` — runs the scraper once (calls `scraper/main.py`).
+- `ui/` — the Astro-based front-end. `ui/package.json` contains npm scripts: `dev`, `build`, and `preview`.
+
+How data flows (at a glance)
+
+1. Scraper builds a search URL per-site using each site scraper (Amazon implementation available).
+2. `BaseScraper.fetch_page` performs async HTTP GETs (httpx) with a small retry/backoff strategy and rotating headers.
+3. Parsed results are standardized via `DataProcessor.standardize_data` and merged by `CreativeScraper`.
+4. The final product list is either printed, written to `scraper/products.json` (when using the API/test code) or returned by the FastAPI endpoint.
+5. The UI statically imports `scraper/products.json` in `ui/src/pages/[locale]/index.astro` and renders `ui/src/components/ProductCard.astro` for each product.
+
+Project-specific conventions & patterns
+
+- Creative parsing and fallbacks: the code favors multiple selector fallbacks and forgiving parsing (price/rating cleaning). See `scraper/scrapers/__init__.py` and `amazon_scraper.py` for selector lists and `_extract_product_data`.
+- Static JSON import in UI: the Astro page imports `../../../../scraper/products.json`. That means the UI works with the JSON file at build/dev time — update `products.json` before running `npm run dev` to see fresh data, or restart dev server after scraper updates.
+- Stubbing strategy: secondary scrapers are stubbed to an empty result (so orchestrator runs them but they return empty lists). This is intentional during development.
+
+Developer guide — setup & run
+
+1) Run the whole project Setup prep (scraper + UI dev server).
+
+Make the entrypoint executable or just run it:
+
+```bash
+# from inside venv, make sure requirements are installed
+
+chmod +x prep.sh
+./prep.sh
+# or just run
+./prep.sh
+```
+
+2) Run the whole project (scraper + UI dev server).
+
+Make the entrypoint executable or just run it:
+
+```bash
+# from inside venv, make sure requirements are installed
+
+chmod +x dev-entrypoint.sh
+./dev-entrypoint.sh
+# or just run
+./dev-entrypoint.sh
+```
+
+This runs the Python scraper once (background) and starts Astro's dev server (`npm run dev`) for the UI.
+
+3) Run the scraper only (one-shot)
+
+```bash
+# from inside venv, make sure requirements are installed
+
+sh dev-scraper-entrypoint.sh
+# or just run
+./dev-scraper-entrypoint.sh
+```
+
+4) Run the API server (FastAPI + uvicorn)
+
+```bash
+# from inside venv, make sure requirements are installed
+
+./dev-scraper-fastapi.sh
+```
+
+Then POST JSON matching `SearchParams` to `http://localhost:8000/api/search` to trigger scraping and writing of `products.json`.
+
+1) UI dev only
+
+```bash
+# from inside venv, make sure requirements are installed
+
+./dev-ui-entrypoint.sh
+```
+
+Notes & troubleshooting
+
+- If the UI does not show updated product data, remember the UI imports `scraper/products.json` at build-time. Either re-run the Astro dev server or re-run the dev entrypoint so the JSON is present before Astro starts.
+- Only the Amazon scraper is implemented. Other scrapers are stubs and will return an empty list — implement their `scrape()` methods in `scraper/scrapers/` to add coverage.
+- `scraper/requirements.txt` pins `httpx`, `fastapi`, `beautifulsoup4`, and `lxml`. If you get SSL/network errors in `httpx`, ensure your environment allows outbound HTTPS.
+- To test low-level HTTP behavior, see `scraper/test_scraper.py` which demonstrates `httpx` tests and calls `AmazonScraper.fetch_page`.
+
+Extending the project
+
+- Add/improve scrapers: implement the `scrape` method in `aliexpress_scraper.py`, `alibaba_scraper.py`, and `walmart_scraper.py` following the Amazon example and selector lists.
+- Make the UI dynamic: instead of static JSON import, switch the Astro UI to fetch `/api/search` at runtime (CORS is already prepared in `api.py` but commented). This will allow live searches without restarting the dev server.
