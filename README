@@ -41,9 +41,9 @@ Project-specific conventions & patterns
 - Static JSON import in UI: the Astro page imports `../../../../scraper/products.json`. That means the UI works with the JSON file at build/dev time — update `products.json` before running `npm run dev` to see fresh data, or restart dev server after scraper updates.
 - Stubbing strategy: secondary scrapers are stubbed to an empty result (so orchestrator runs them but they return empty lists). This is intentional during development.
 
-Developer guide — setup & run
+## Developer guide — setup & run
 
-1) Run the whole project Setup prep (scraper + UI dev server).
+### Run the whole project Setup prep (scraper + UI dev server).
 
 Make the entrypoint executable or just run it:
 
@@ -56,7 +56,7 @@ chmod +x prep.sh
 ./prep.sh
 ```
 
-2) Run the whole project (scraper + UI dev server).
+### Run the whole project (scraper + UI dev server).
 
 Make the entrypoint executable or just run it:
 
@@ -71,7 +71,7 @@ chmod +x dev-entrypoint.sh
 
 This runs the Python scraper once (background) and starts Astro's dev server (`npm run dev`) for the UI.
 
-3) Run the scraper only (one-shot)
+### Run the scraper only (one-shot)
 
 ```bash
 # from inside venv, make sure requirements are installed
@@ -81,7 +81,7 @@ sh dev-scraper-entrypoint.sh
 ./dev-scraper-entrypoint.sh
 ```
 
-4) Run the API server (FastAPI + uvicorn)
+### Run the API server (FastAPI + uvicorn)
 
 ```bash
 # from inside venv, make sure requirements are installed
@@ -91,7 +91,7 @@ sh dev-scraper-entrypoint.sh
 
 Then POST JSON matching `SearchParams` to `http://localhost:8000/api/search` to trigger scraping and writing of `products.json`.
 
-1) UI dev only
+## UI dev only
 
 ```bash
 # from inside venv, make sure requirements are installed
