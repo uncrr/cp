@@ -3,9 +3,13 @@
 
 ![App](/asset/en.png)
 
-CompulsivePrice is a small experimental project that demonstrates a product scraping pipeline + an Astro UI that displays scraped products. supports english, deutsch, french and spanish languages.
+CompulsivePrice is a small experimental project that demonstrates a product scraping pipeline + UI that displays scraped products. supports english, deutsch, french and spanish languages.
 
-![Language](/asset/language.png)
+![Language options](/asset/language.png)
+
+Deutsch based UI
+
+![Language - Deutsch](/asset/de.png)
 
 High-level overview
 
