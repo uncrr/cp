@@ -2,18 +2,18 @@
     "source": "amazon",
     "products": [
         {
-            "title": "The Ice Cream Machine: 6 Deliciously Different Stories with the Same Exact Name!",
+            "title": "BENTISM Commercial Ice Cream Maker Single Flavor 10-15.2L /2.7-4Gal Per Hour Soft-Serve Ice Cream Machine with LCD Panel, Stainless Steel",
             "description":"Make any delicious ice cream flavor",
             "category":"automotive",
-            "originalPrice" : 100,
-            "price": "9.32",
+            "originalPrice" : 1259,
+            "price": "1099",
             "rating": "4.5",
             "link": "www.amazon.com/Ice-Cream-Machine-Adam-Rubin-ebook/dp/B0951N79PH/ref=sr_1_1?dib=eyJ2IjoiMSJ9.NNFiQMy9p9elytvoTbEw-ZMWTGB36oUR_BiqfuJbIL9JhHCmQLR3sqXnOX-TONwF0rAjdcC3mEysps_mx5t_peX8m2WCRx3zm2VcTfttGrx2ATn9vVnSsl8GcD4pbVbXs5Y9A6di9c5nSqC_t_E8gkvPm4RYLnKwP7SMUZHckW65s-eVLj6h-FKWieb1Lh0EV5MwujUOKSZRmGYh06wNr7of_vAUZeiFQYwZb08yZiE.8ZiZg4jN34CgA7XNVFrBJIcxMVRvWZV-41viuEtunH0&dib_tag=se&keywords=ice+cream+machine&qid=1760785234&s=books&sr=1-1",
-            "image": "https://m.media-amazon.com/images/I/91iSW0UqIZL._AC_UL960_FMwebp_QL65_.jpg",
+            "image": "https://i5.walmartimages.com/seo/VEVOR-Commercial-Ice-Cream-Maker-Single-Flavor-10-15-2L-2-7-4Gal-Per-Hour-Soft-Serve-Ice-Cream-Machine-with-LCD-Panel-Stainless-Steel_d69a2276-76fa-4b8b-b9f8-f7f6fc3b50bf.c9bade6fe1e9ae6d2e28d9c454a683ae.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
             "source":"Amazon",
             "inStock" : true,
-            "vendor" : "Tesla motors",
-            "reviewCount": 2223,
+            "vendor" : "VEVOR",
+            "reviewCount": 15,
             "shipping" : "Free"
         },
         {
