@@ -1,5 +1,5 @@
 
-# CompulsivePrice.com
+# CompulsivePrices.com
 
 ![App](/asset/en.png)
 
